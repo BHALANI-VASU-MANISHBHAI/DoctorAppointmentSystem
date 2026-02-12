@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import API from "../api/index.js";
 import { useParams, useNavigate } from "react-router-dom";
+import { formatDate, formatTime } from "../utills/helpers.js";
 
 function DoctorSlot() {
   const doctorId = useParams().id;
@@ -16,6 +17,7 @@ function DoctorSlot() {
     try {
       setLoading(true);
       const data = await API.patient.getDoctorSlots(doctorId);
+      console.log("Fetched doctor slots:", data);
       setSlots(data);
       // Extract doctor info from first slot if available
       if (data.length > 0 && data[0].doctor) {
@@ -33,6 +35,7 @@ function DoctorSlot() {
     const appointmentData = {
       slotId: slotId,
     };
+    console.log("Booking appointment with data:", appointmentData);
     try {
       setBookingSlot(slotId);
       const response = await API.patient.bookAppointment(appointmentData);
@@ -41,7 +44,7 @@ function DoctorSlot() {
       await fetchDoctorSlots();
     } catch (error) {
       console.error("Error booking appointment:", error);
-      showMessage(error.response?.data?.message || "Failed to book appointment. Please try again.", "error");
+      showMessage(error.response?.data || "Failed to book appointment. Please try again.", "error");
     } finally {
       setBookingSlot(null);
     }
@@ -50,22 +53,6 @@ function DoctorSlot() {
   const showMessage = (text, type) => {
     setMessage({ text, type });
     setTimeout(() => setMessage(null), 5000);
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
-  };
-
-  const formatTime = (timeString) => {
-    if (!timeString) return '';
-    return timeString;
   };
 
   const isSlotAvailable = (slot) => {
@@ -97,7 +84,7 @@ function DoctorSlot() {
   }, [doctorId]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         
         {/* Back Button */}
@@ -137,8 +124,18 @@ function DoctorSlot() {
         {doctorInfo && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center text-white font-bold text-3xl shadow-lg flex-shrink-0">
-                {doctorInfo.user?.name?.charAt(0) || "D"}
+              <div className="flex-shrink-0">
+                {doctorInfo.profilePictureUrl ? (
+                  <img 
+                    src={doctorInfo.profilePictureUrl} 
+                    alt={doctorInfo.user?.name}
+                    className="w-24 h-24 rounded-2xl object-cover shadow-md border-2 border-blue-100"
+                  />
+                ) : (
+                  <div className="w-24 h-24 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-bold text-3xl shadow-lg">
+                    {doctorInfo.user?.name?.charAt(0) || "D"}
+                  </div>
+                )}
               </div>
               
               <div className="flex-1">
@@ -187,7 +184,7 @@ function DoctorSlot() {
               onClick={() => setSelectedDate('all')}
               className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                 selectedDate === 'all'
-                  ? 'bg-blue-600 text-white shadow-md'
+                  ? 'bg-blue-500 text-white shadow-sm'
                   : 'bg-white text-gray-700 border border-gray-200 hover:border-blue-300'
               }`}
             >
@@ -199,7 +196,7 @@ function DoctorSlot() {
                 onClick={() => setSelectedDate(date)}
                 className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                   selectedDate === date
-                    ? 'bg-blue-600 text-white shadow-md'
+                    ? 'bg-blue-500 text-white shadow-sm'
                     : 'bg-white text-gray-700 border border-gray-200 hover:border-blue-300'
                 }`}
               >
@@ -223,7 +220,7 @@ function DoctorSlot() {
         {!loading && slots.length === 0 && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12">
             <div className="flex flex-col items-center justify-center text-center">
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center mb-6">
+              <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6">
                 <svg className="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
@@ -238,12 +235,13 @@ function DoctorSlot() {
 
         {/* Slots Grid - Grouped by Date */}
         {!loading && filteredSlots.length > 0 && (
+          console.log("Rendering slots grouped by date:", groupSlotsByDate()) || true, // Log grouped slots
           <div className="space-y-8">
             {Object.entries(groupSlotsByDate()).map(([date, dateSlots]) => (
               <div key={date} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                 {/* Date Header */}
                 <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-white font-bold">
+                  <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold">
                     {new Date(date).getDate()}
                   </div>
                   <div>
@@ -297,9 +295,9 @@ function DoctorSlot() {
                           {/* Book Button */}
                           {available ? (
                             <button
-                              onClick={() => bookAppointment(slot.id)}
+                              onClick={() => bookAppointment(slot.slotId)}
                               disabled={isBooking}
-                              className="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 transition-all duration-200 shadow-sm hover:shadow-md"
+                              className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 disabled:opacity-50 transition-all duration-200 shadow-sm hover:shadow-md"
                             >
                               {isBooking ? (
                                 <span className="flex items-center justify-center gap-2">

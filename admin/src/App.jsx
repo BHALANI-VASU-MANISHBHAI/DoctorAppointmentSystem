@@ -10,7 +10,8 @@ import DoctorSlots from './pages/DoctorSlots'
 import AdminNavbar from './components/AdminNavbar'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
+import ProtectedRoute from './components/ProtectedRoute'
+ 
 function App() {
   return (
     <>
@@ -19,11 +20,11 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/all-doctors" element={<AllDoctors />} />
-        <Route path="/add-doctor" element={<AddDoctor />} />
-        <Route path="/all-slots" element={<AllSlots />} />
-        <Route path="/add-slots" element={<AddSlots />} />
-        <Route path="/doctor-slots" element={<DoctorSlots />} />
+        <Route path="/all-doctors" element={<ProtectedRoute><AllDoctors /></ProtectedRoute>} />
+        <Route path="/add-doctor" element={<ProtectedRoute><AddDoctor /></ProtectedRoute>} />
+        <Route path="/all-slots" element={<ProtectedRoute><AllSlots /></ProtectedRoute>} />
+        <Route path="/add-slots" element={<ProtectedRoute><AddSlots /></ProtectedRoute>} />
+        <Route path="/doctor-slots" element={<ProtectedRoute><DoctorSlots /></ProtectedRoute>} />
       </Routes>
       </>
   )

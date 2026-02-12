@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import API from "../api/index.js";
 import { useNavigate } from "react-router-dom";
+import GlobalContext from "../contexts/GlobalContext";
 function Login() {
   const navigate = useNavigate();
+  const { setToken } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,10 +20,10 @@ function Login() {
       console.log("Attempting admin login with:", { email, password });
       const response = await API.auth.login({ email, password });
       
-      localStorage.setItem("token", response.data.token || response.data);
+      const token = response.data.token || response.data;
+      setToken(token);
       toast.success("Admin login successful");
       navigate("/all-doctors");
-      
       console.log("Admin login response:", response.data);
     } catch (error) {
       console.error("Admin login error:", error.response);
@@ -32,18 +34,18 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 relative overflow-hidden">
-      <div className="absolute -top-24 -left-24 h-64 w-64 rounded-full bg-pink-300/30 blur-3xl" />
-      <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-purple-300/30 blur-3xl" />
+    <div className="min-h-screen bg-gray-50 relative overflow-hidden">
+      <div className="absolute -top-24 -left-24 h-64 w-64 rounded-full bg-blue-300/30 blur-3xl" />
+      <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-blue-300/30 blur-3xl" />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl items-center px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid w-full gap-10 lg:grid-cols-2">
           <div className="hidden lg:block">
-            <div className="rounded-3xl bg-gradient-to-br from-purple-600 to-pink-600 p-10 text-white shadow-xl">
+            <div className="rounded-3xl bg-blue-600 p-10 text-white shadow-xl">
               <h1 className="text-4xl font-serif font-semibold tracking-tight">
                 Admin Portal
               </h1>
-              <p className="mt-3 text-purple-100">
+              <p className="mt-3 text-blue-100">
                 Manage doctors, appointments, and platform operations from your dashboard.
               </p>
               <div className="mt-8 space-y-4">
@@ -55,7 +57,7 @@ function Login() {
                   </div>
                   <div>
                     <p className="text-sm font-semibold">Manage doctors</p>
-                    <p className="text-xs text-purple-100">Add, edit, or remove specialists</p>
+                    <p className="text-xs text-blue-100">Add, edit, or remove specialists</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 rounded-xl bg-white/10 p-4">
@@ -66,7 +68,7 @@ function Login() {
                   </div>
                   <div>
                     <p className="text-sm font-semibold">Schedule control</p>
-                    <p className="text-xs text-purple-100">Oversee all appointments</p>
+                    <p className="text-xs text-blue-100">Oversee all appointments</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 rounded-xl bg-white/10 p-4">
@@ -77,7 +79,7 @@ function Login() {
                   </div>
                   <div>
                     <p className="text-sm font-semibold">Analytics</p>
-                    <p className="text-xs text-purple-100">Track platform performance</p>
+                    <p className="text-xs text-blue-100">Track platform performance</p>
                   </div>
                 </div>
               </div>
@@ -88,7 +90,7 @@ function Login() {
             <div className="w-full rounded-3xl border border-slate-100 bg-white/90 p-8 shadow-xl backdrop-blur">
               <div className="mb-6">
                 <div className="mb-4 flex justify-center">
-                  <div className="h-16 w-16 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg">
+                  <div className="h-16 w-16 rounded-full bg-blue-600 flex items-center justify-center shadow-lg">
                     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
@@ -109,7 +111,7 @@ function Login() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="admin@example.com"
                     required
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-purple-500 focus:ring-4 focus:ring-purple-100"
+                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-200"
                   />
                 </div>
 
@@ -122,7 +124,7 @@ function Login() {
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Enter your password"
                       required
-                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 pr-12 text-slate-900 shadow-sm outline-none transition focus:border-purple-500 focus:ring-4 focus:ring-purple-100"
+                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 pr-12 text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-200"
                     />
                     <button
                       type="button"
@@ -137,7 +139,7 @@ function Login() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-5 py-3 font-semibold text-white shadow-lg transition hover:from-purple-700 hover:to-pink-700 disabled:cursor-not-allowed disabled:opacity-70"
+                  className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   {loading ? "Signing in..." : "Sign in as Admin"}
                 </button>
@@ -146,7 +148,7 @@ function Login() {
               <div className="mt-6 text-center text-sm text-slate-600">
                 <p>
                   Forgot your password?{" "}
-                  <Link to="/reset-password" className="font-semibold text-purple-700 hover:text-purple-900">
+                  <Link to="/reset-password" className="font-semibold text-blue-600 hover:text-blue-700">
                     Reset it
                   </Link>
                 </p>

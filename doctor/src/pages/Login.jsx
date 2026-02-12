@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { toast } from "react-toastify";
 import API from "../api/index.js";
 import { useNavigate, Link } from "react-router-dom";
+import GlobalContext from "../contexts/GlobalContext";
 
 function Login() {
   const navigate = useNavigate();
+  const { setToken } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +20,7 @@ function Login() {
       // TODO: Implement doctor login API call
       const { token } = await API.auth.login({ email, password });
       console.log("Received token from API:", token);
-      localStorage.setItem("token", token);
+      setToken(token);
       toast.success("Doctor login successful");
       navigate("/view-slots");
     } catch (error) {

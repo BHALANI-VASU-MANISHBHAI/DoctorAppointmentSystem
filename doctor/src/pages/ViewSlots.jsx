@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../api/";
-import { toast } from "react-toastify";
-
+import AppointmentCard from "../components/AppointmentCard";
+import { formatDate, getStatusColor, getUniqueDates, groupSlotsByDate, filterSlotsByDate } from "../utills/helpers.js";
 function ViewSlots() {
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -14,7 +14,6 @@ function ViewSlots() {
       console.log("Own slots:", response.data);
       setSlots(response.data.slots || response.data || []);
     } catch (error) {
-      toast.error(error.response?.data || "Failed to fetch slots");
       console.error("Error:", error);
     } finally {
       setLoading(false);
@@ -25,48 +24,7 @@ function ViewSlots() {
     getOwnSlots();
   }, []);
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      weekday: "short",
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
-  const getStatusColor = (status) => {
-    switch (status?.toUpperCase()) {
-      case "AVAILABLE":
-        return "bg-emerald-100 text-emerald-700 border-emerald-200";
-      case "BOOKED":
-        return "bg-amber-100 text-amber-700 border-amber-200";
-      case "CANCELLED":
-        return "bg-gray-100 text-gray-700 border-gray-200";
-      default:
-        return "bg-blue-100 text-blue-700 border-blue-200";
-    }
-  };
-
-  const getUniqueDates = () => {
-    const dates = [...new Set(slots.map((slot) => slot.date))];
-    return dates.sort();
-  };
-
-  const filteredSlots =
-    selectedDate === "all" ? slots : slots.filter((slot) => slot.date === selectedDate);
-
-  const groupSlotsByDate = () => {
-    const grouped = {};
-    filteredSlots.forEach((slot) => {
-      if (!grouped[slot.date]) {
-        grouped[slot.date] = [];
-      }
-      grouped[slot.date].push(slot);
-    });
-    return grouped;
-  };
+  const filteredSlots = filterSlotsByDate(slots, selectedDate);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-cyan-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -76,13 +34,17 @@ function ViewSlots() {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
             My Time Slots
           </h1>
-          <p className="text-gray-600 mt-2">Manage and view your available appointment slots</p>
+          <p className="text-gray-600 mt-2">
+            Manage and view your available appointment slots
+          </p>
         </div>
 
         {/* Date Filter */}
         {slots.length > 0 && (
           <div className="mb-6 flex items-center gap-3 flex-wrap">
-            <span className="text-sm font-medium text-gray-700">Filter by date:</span>
+            <span className="text-sm font-medium text-gray-700">
+              Filter by date:
+            </span>
             <button
               onClick={() => setSelectedDate("all")}
               className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
@@ -93,7 +55,7 @@ function ViewSlots() {
             >
               All Dates
             </button>
-            {getUniqueDates().map((date) => (
+            {getUniqueDates(slots).map((date) => (
               <button
                 key={date}
                 onClick={() => setSelectedDate(date)}
@@ -103,7 +65,10 @@ function ViewSlots() {
                     : "bg-white text-gray-700 border border-gray-200 hover:border-teal-300"
                 }`}
               >
-                {new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                {new Date(date).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                })}
               </button>
             ))}
           </div>
@@ -124,13 +89,26 @@ function ViewSlots() {
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12">
             <div className="flex flex-col items-center justify-center text-center">
               <div className="w-24 h-24 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-full flex items-center justify-center mb-6">
-                <svg className="w-12 h-12 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <svg
+                  className="w-12 h-12 text-teal-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No Slots Created</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                No Slots Created
+              </h3>
               <p className="text-gray-600 mb-6 max-w-md">
-                You haven't created any time slots yet. Create your first slot to accept patient appointments.
+                You haven't created any time slots yet. Create your first slot
+                to accept patient appointments.
               </p>
               <button className="px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-lg font-medium hover:from-teal-700 hover:to-cyan-700 transition-all duration-200 shadow-lg hover:shadow-xl">
                 Create Time Slot
@@ -143,11 +121,25 @@ function ViewSlots() {
         {!loading && slots.length > 0 && filteredSlots.length === 0 && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12">
             <div className="flex flex-col items-center justify-center text-center">
-              <svg className="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              <svg
+                className="w-16 h-16 text-gray-400 mb-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
               </svg>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No Slots for Selected Date</h3>
-              <p className="text-gray-600">Try selecting a different date to see available slots.</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                No Slots for Selected Date
+              </h3>
+              <p className="text-gray-600">
+                Try selecting a different date to see available slots.
+              </p>
             </div>
           </div>
         )}
@@ -155,52 +147,34 @@ function ViewSlots() {
         {/* Slots Grid - Grouped by Date */}
         {!loading && filteredSlots.length > 0 && (
           <div className="space-y-8">
-            {Object.entries(groupSlotsByDate()).map(([date, dateSlots]) => (
-              <div key={date} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            {Object.entries(groupSlotsByDate(filteredSlots)).map(([date, dateSlots]) => (
+              <div
+                key={date}
+                className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6"
+              >
                 {/* Date Header */}
                 <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100">
                   <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center text-white font-bold">
                     {new Date(date).getDate()}
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900">{formatDate(date)}</h3>
-                    <p className="text-sm text-gray-600">{dateSlots.length} slots</p>
+                    <h3 className="text-xl font-bold text-gray-900">
+                      {formatDate(date)}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      {dateSlots.length} slots
+                    </p>
                   </div>
                 </div>
 
                 {/* Time Slots Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {dateSlots.map((slot) => (
-                    <div
+                    <AppointmentCard
                       key={slot.id}
-                      className="group relative rounded-xl p-4 border-2 border-gray-200 bg-white hover:border-teal-400 hover:shadow-md transition-all duration-200 cursor-pointer"
-                    >
-                      <div className="flex flex-col items-center text-center">
-                        {/* Time Icon */}
-                        <div className="w-12 h-12 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center mb-3 group-hover:bg-teal-600 group-hover:text-white transition-all duration-200">
-                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                        </div>
-
-                        {/* Time Range */}
-                        <div className="mb-4">
-                          <p className="text-lg font-bold text-gray-900">{slot.startTime}</p>
-                          <p className="text-sm text-gray-500">to</p>
-                          <p className="text-lg font-bold text-gray-900">{slot.endTime}</p>
-                        </div>
-
-                        {/* Status Badge */}
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold border mb-3 ${getStatusColor(slot.status)}`}>
-                          {slot.status || "AVAILABLE"}
-                        </span>
-
-                        {/* Action Button */}
-                        <button className="w-full px-3 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-all duration-200 text-sm">
-                          Manage
-                        </button>
-                      </div>
-                    </div>
+                      slot={slot}
+                      getStatusColor={getStatusColor}
+                    />
                   ))}
                 </div>
               </div>

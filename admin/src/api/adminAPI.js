@@ -12,7 +12,11 @@ export const adminAPI = {
         return responce;
     },
     addNewDoctor:async(data)=>{
-        const responce = await apiClient.post(API_ENDPOINTS.ADD_NEW_DOCTOR, data);
+        const responce = await apiClient.post(API_ENDPOINTS.ADD_NEW_DOCTOR, data, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
         console.log("Add New Doctor API response:", responce.data);
         return responce;
     },
@@ -34,6 +38,15 @@ export const adminAPI = {
     getDoctorSlotsByStatus:async(doctorId, status)=>{
         const responce = await apiClient.get(API_ENDPOINTS.GET_DOCTOR_SLOTS_BY_STATUS(doctorId, status));
         console.log("Get Doctor Slots By Status API response:", responce.data);
+        return responce;
+    },
+    uploadImage:async(formData)=>{
+        const responce = await apiClient.post(API_ENDPOINTS.UPLOAD_IMAGE, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        console.log("Upload Image API response:", responce.data);
         return responce;
     }
 

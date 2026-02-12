@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../api/";
 import { toast } from "react-toastify";
+import { formatDate, getStatusColor } from "../utills/helpers.js";
 
 function BookSlots() {
   const [appointments, setAppointments] = useState([]);
@@ -13,7 +14,6 @@ function BookSlots() {
       console.log("Booked appointments:", response.data);
       setAppointments(response.data.slots || response.data || []);
     } catch (error) {
-      toast.error(error.response?.data || "Failed to fetch booked appointments");
       console.error("Error:", error);
     } finally {
       setLoading(false);
@@ -24,31 +24,7 @@ function BookSlots() {
     getBookedAppointments();
   }, []);
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
 
-  const getStatusColor = (status) => {
-    switch (status?.toLowerCase()) {
-      case "confirmed":
-        return "bg-emerald-100 text-emerald-700 border-emerald-200";
-      case "pending":
-        return "bg-amber-100 text-amber-700 border-amber-200";
-      case "cancelled":
-        return "bg-gray-100 text-gray-700 border-gray-200";
-      case "completed":
-        return "bg-blue-100 text-blue-700 border-blue-200";
-      default:
-        return "bg-gray-100 text-gray-700 border-gray-200";
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-cyan-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -61,6 +37,7 @@ function BookSlots() {
           <p className="text-gray-600 mt-2">View all patient appointments scheduled with you</p>
         </div>
 
+        
         {/* Loading State */}
         {loading && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12">
@@ -70,6 +47,8 @@ function BookSlots() {
             </div>
           </div>
         )}
+
+        
 
         {/* Empty State */}
         {!loading && appointments.length === 0 && (
@@ -89,23 +68,24 @@ function BookSlots() {
         {/* Appointments List */}
         {!loading && appointments.length > 0 && (
           <div className="space-y-4">
-            {appointments.map((appointment) => (
+            {appointments.map((appointment,index) => (
               <div
-                key={appointment.id}
-                className="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 overflow-hidden group"
+                key={index}
+                className="bg-white rounded-xl shadow-sm border border-gray-500 hover:shadow-md hover:scale-102 hover:border-teal-800 transition-all duration-300 overflow-hidden group"
+                
               >
                 <div className="p-6">
                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                     {/* Patient Info */}
                     <div className="flex items-start gap-4 flex-1">
                       <div className="w-14 h-14 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md flex-shrink-0">
-                        {appointment.patient?.name?.charAt(0) || "P"}
+                        {appointment.patientName.charAt(0) || "P"}
                       </div>
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-3 mb-2">
                           <h3 className="text-xl font-semibold text-gray-900">
-                            {appointment.patient?.name || "Patient"}
+                            {appointment.patientName || "Patient"}
                           </h3>
                           <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(appointment.status)}`}>
                             {appointment.status || "Pending"}
@@ -117,7 +97,7 @@ function BookSlots() {
                             <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
-                            <span>{appointment.patient?.email}</span>
+                            <span>{appointment.patientEmail}</span>
                           </div>
                         </div>
 
@@ -126,14 +106,14 @@ function BookSlots() {
                             <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            <span className="font-medium">{formatDate(appointment.slot?.date)}</span>
+                            <span className="font-medium">{formatDate(appointment.date)}</span>
                           </div>
 
                           <div className="flex items-center gap-1.5">
                             <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span>{appointment.slot?.startTime} - {appointment.slot?.endTime}</span>
+                            <span>{appointment.startTime} - {appointment.endTime}</span>
                           </div>
                         </div>
                       </div>
@@ -153,7 +133,7 @@ function BookSlots() {
                 </div>
 
                 {/* Bottom accent */}
-                <div className="h-1 bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+               
               </div>
             ))}
           </div>

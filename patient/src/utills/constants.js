@@ -8,7 +8,7 @@ export const API_ENDPOINTS = {
     GET_ALL_DOCTORS: 'doctor/all',
     GET_DOCTOR_SLOTS: (doctorId) => `/patient/doctors/${doctorId}/slots`,
     BOOK_APPOINTMENT: '/patient/bookappointment',
-    GET_OWN_APPOINTMENTS: '/patient/appointments',
+    GET_OWN_APPOINTMENTS: '/patient/appointments',  
     CANCEL_APPOINTMENT: (appointmentId) => `/patient/${appointmentId}`,
 // ----------------------------------------Doctor-----------------------------------
     GET_OWN_SLOTS: '/doctor/slots',

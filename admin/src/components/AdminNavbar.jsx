@@ -25,12 +25,7 @@ function AdminNavbar() {
             onClick={() => navigate("/all-doctors")}
             className="flex items-center gap-2 hover:opacity-80 transition"
           >
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            <span className="font-bold text-xl bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <span className="font-bold text-xl bg-blue-500 bg-clip-text text-transparent">
               AdminHub
             </span>
           </button>

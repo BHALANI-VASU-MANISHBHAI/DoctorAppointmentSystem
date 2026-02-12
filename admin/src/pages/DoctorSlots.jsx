@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { adminAPI } from "../api/adminAPI.js";
 import { toast } from "react-toastify";
+import { formatDate, getStatusColor, groupSlotsByDate } from "../utills/helpers.js";
 
 function DoctorSlots() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ function DoctorSlots() {
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("AVAILABLE");
 
-  const statuses = ["AVAILABLE", "BOOKED", "DEACTIVATED"];
+  const statuses = ["AVAILABLE", "BOOKED"];
 
   // Fetch doctors on mount
   useEffect(() => {
@@ -59,47 +60,7 @@ function DoctorSlots() {
     }
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
 
-  const getStatusColor = (status) => {
-    switch (status?.toUpperCase()) {
-      case "AVAILABLE":
-        return "bg-emerald-100 text-emerald-700 border-emerald-200";
-      case "BOOKED":
-        return "bg-amber-100 text-amber-700 border-amber-200";
-      case "DEACTIVATED":
-        return "bg-gray-100 text-gray-700 border-gray-200";
-      default:
-        return "bg-blue-100 text-blue-700 border-blue-200";
-    }
-  };
-
-  const groupSlotsByDate = () => {
-    const grouped = {};
-    slots.forEach((slot) => {
-      if (!grouped[slot.date]) {
-        grouped[slot.date] = [];
-      }
-      grouped[slot.date].push(slot);
-    });
-
-    const sortedDates = Object.keys(grouped).sort((a, b) => new Date(a) - new Date(b));
-    const sortedGrouped = {};
-    sortedDates.forEach((date) => {
-      sortedGrouped[date] = grouped[date];
-    });
-
-    return sortedGrouped;
-  };
 
   const handleDeleteSlot = async (slotId) => {
     if (window.confirm("Are you sure you want to delete this slot?")) {
@@ -117,11 +78,11 @@ function DoctorSlots() {
   const selectedDoctorData = doctors.find((d) => d.id.toString() === selectedDoctor);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold text-blue-600">
             Doctor Slots
           </h1>
           <p className="text-gray-600 mt-2">View and manage slots for a specific doctor</p>
@@ -136,18 +97,18 @@ function DoctorSlots() {
             </label>
             {doctorsLoading ? (
               <div className="flex items-center gap-2 text-gray-500 text-sm">
-                <div className="w-4 h-4 border-2 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+                <div className="w-4 h-4 border-2 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
                 Loading...
               </div>
             ) : (
               <select
                 value={selectedDoctor}
                 onChange={(e) => setSelectedDoctor(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white shadow-sm outline-none transition focus:border-purple-500 focus:ring-4 focus:ring-purple-100"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-200"
               >
                 {doctors.map((doctor) => (
                   <option key={doctor.id} value={doctor.id}>
-                    {doctor.user?.name} - {doctor.specialization}
+                    {doctor.name} - {doctor.specialization}
                   </option>
                 ))}
               </select>
@@ -166,8 +127,8 @@ function DoctorSlots() {
                   onClick={() => setSelectedStatus(status)}
                   className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                     selectedStatus === status
-                      ? "bg-purple-600 text-white shadow-md"
-                      : "bg-white text-gray-700 border border-gray-200 hover:border-purple-300"
+                      ? "bg-blue-500 text-white shadow-md"
+                      : "bg-white text-gray-700 border border-gray-200 hover:border-blue-300"
                   }`}
                 >
                   {status}
@@ -180,14 +141,38 @@ function DoctorSlots() {
         {/* Doctor Info Card */}
         {selectedDoctorData && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-2xl">
-                {selectedDoctorData.user?.name?.charAt(0) || "D"}
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+              <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-3xl flex-shrink-0">
+                {selectedDoctorData.profilePictureUrl ? (
+                  <img
+                    src={selectedDoctorData.profilePictureUrl}
+                    alt="Doctor Profile"
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                ) : (
+                  <span>{selectedDoctorData.name?.charAt(0) || "D"}</span>
+                )}
               </div>
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900">{selectedDoctorData.user?.name}</h2>
-                <p className="text-gray-600">{selectedDoctorData.specialization}</p>
-                <p className="text-sm text-gray-500">{selectedDoctorData.experience} years experience</p>
+              <div className="flex-1">
+                <h2 className="text-2xl font-bold text-gray-900">{selectedDoctorData.name}</h2>
+                <p className="text-blue-600 font-medium">{selectedDoctorData.specialization}</p>
+                <p className="text-sm text-gray-500 mt-1">{selectedDoctorData.experience} years experience</p>
+                <p className="text-sm text-gray-600 mt-2">{selectedDoctorData.email}</p>
+                {selectedDoctorData.bio && (
+                  <p className="text-gray-600 mt-3 text-sm leading-relaxed">{selectedDoctorData.bio}</p>
+                )}
+                {selectedDoctorData.degrees && selectedDoctorData.degrees.length > 0 && (
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                    <p className="text-xs font-semibold text-gray-700 uppercase mb-2">Qualifications</p>
+                    <div className="space-y-1">
+                      {selectedDoctorData.degrees.map((degree, idx) => (
+                        <p key={idx} className="text-sm text-gray-600">
+                          <span className="font-medium">{degree.degreeName}</span> in {degree.field} from {degree.university} ({degree.yearCompleted})
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -197,7 +182,7 @@ function DoctorSlots() {
         {loading && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12">
             <div className="flex flex-col items-center justify-center">
-              <div className="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin mb-4"></div>
+              <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
               <p className="text-gray-600 font-medium">Loading slots...</p>
             </div>
           </div>
@@ -207,8 +192,8 @@ function DoctorSlots() {
         {!loading && slots.length === 0 && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12">
             <div className="flex flex-col items-center justify-center text-center">
-              <div className="w-24 h-24 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center mb-6">
-                <svg className="w-12 h-12 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                <svg className="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </div>
@@ -225,11 +210,11 @@ function DoctorSlots() {
         {/* Slots Grouped by Date */}
         {!loading && slots.length > 0 && (
           <div className="space-y-6">
-            {Object.entries(groupSlotsByDate()).map(([date, dateSlots]) => (
+            {Object.entries(groupSlotsByDate(slots)).map(([date, dateSlots]) => (
               <div key={date} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 {/* Date Header */}
-                <div className="flex items-center gap-3 bg-gradient-to-r from-purple-50 to-pink-50 px-6 py-4 border-b border-gray-100">
-                  <div className="w-14 h-14 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+                <div className="flex items-center gap-3 bg-blue-50 px-6 py-4 border-b border-gray-100">
+                  <div className="w-14 h-14 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-lg">
                     {new Date(date).getDate()}
                   </div>
                   <div className="flex-1">
@@ -259,7 +244,8 @@ function DoctorSlots() {
                         return (
                           <tr
                             key={slot.id}
-                            className={`border-b border-gray-100 hover:bg-purple-50/30 transition-colors ${
+                            className={`border-b border-gray-100 hover:bg-blue-50/30 transition-colors ${
+
                               index % 2 === 0 ? "bg-white" : "bg-gray-50/20"
                             }`}
                           >
@@ -283,7 +269,7 @@ function DoctorSlots() {
                             </td>
                             <td className="px-6 py-4 text-center">
                               <div className="flex items-center justify-center gap-2">
-                                <button className="p-2 text-purple-600 hover:bg-purple-100 rounded-lg transition-colors" title="View">
+                                <button className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors" title="View">
                                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />

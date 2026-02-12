@@ -49,9 +49,9 @@ function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 relative overflow-hidden">
-      <div className="absolute -top-24 -left-24 h-64 w-64 rounded-full bg-pink-300/30 blur-3xl" />
-      <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-purple-300/30 blur-3xl" />
+    <div className="min-h-screen bg-gray-50 relative overflow-hidden">
+      <div className="absolute -top-24 -left-24 h-64 w-64 rounded-full bg-blue-300/30 blur-3xl" />
+      <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-blue-300/30 blur-3xl" />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-4xl items-center px-4 py-12 sm:px-6 lg:px-8">
         <div className="w-full rounded-3xl border border-slate-100 bg-white/90 p-8 shadow-xl backdrop-blur">
@@ -59,7 +59,7 @@ function ResetPassword() {
           <div className="mb-8 flex justify-between">
             <div className={`flex flex-col items-center`}>
               <div className={`flex h-10 w-10 items-center justify-center rounded-full font-bold text-white ${
-                step === "email" || step === "code" || step === "newpassword" ? "bg-purple-600" : "bg-gray-300"
+                step === "email" || step === "code" || step === "newpassword" ? "bg-blue-600" : "bg-gray-300"
               }`}>
                 1
               </div>
@@ -67,12 +67,12 @@ function ResetPassword() {
             </div>
 
             <div className={`flex flex-1 items-center px-4`}>
-              <div className={`h-1 flex-1 ${step === "code" || step === "newpassword" ? "bg-purple-600" : "bg-gray-300"}`} />
+              <div className={`h-1 flex-1 ${step === "code" || step === "newpassword" ? "bg-blue-600" : "bg-gray-300"}`} />
             </div>
 
             <div className={`flex flex-col items-center`}>
               <div className={`flex h-10 w-10 items-center justify-center rounded-full font-bold text-white ${
-                step === "code" || step === "newpassword" ? "bg-purple-600" : "bg-gray-300"
+                step === "code" || step === "newpassword" ? "bg-blue-600" : "bg-gray-300"
               }`}>
                 2
               </div>
@@ -80,12 +80,12 @@ function ResetPassword() {
             </div>
 
             <div className={`flex flex-1 items-center px-4`}>
-              <div className={`h-1 flex-1 ${step === "newpassword" ? "bg-purple-600" : "bg-gray-300"}`} />
+              <div className={`h-1 flex-1 ${step === "newpassword" ? "bg-blue-600" : "bg-gray-300"}`} />
             </div>
 
             <div className={`flex flex-col items-center`}>
               <div className={`flex h-10 w-10 items-center justify-center rounded-full font-bold text-white ${
-                step === "newpassword" ? "bg-purple-600" : "bg-gray-300"
+                step === "newpassword" ? "bg-blue-600" : "bg-gray-300"
               }`}>
                 3
               </div>
@@ -111,21 +111,21 @@ function ResetPassword() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@example.com"
                   required
-                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-purple-500 focus:ring-4 focus:ring-purple-100"
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-200"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-5 py-3 font-semibold text-white shadow-lg transition hover:from-purple-700 hover:to-pink-700 disabled:cursor-not-allowed disabled:opacity-70"
+                className="w-full rounded-xl bg-blue-500 px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {loading ? "Sending..." : "Send reset code"}
               </button>
 
               <div className="text-center text-sm text-slate-600">
                 Remember your password?{" "}
-                <Link to="/login" className="font-semibold text-purple-700 hover:text-purple-900">
+                <Link to="/login" className="font-semibold text-blue-600 hover:text-blue-700">
                   Sign in
                 </Link>
               </div>
@@ -151,13 +151,13 @@ function ResetPassword() {
                     onChange={(e) => setCode(e.target.value)}
                     placeholder="Enter the code"
                     required
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-purple-500 focus:ring-4 focus:ring-purple-100"
+                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-200"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-5 py-3 font-semibold text-white shadow-lg transition hover:from-purple-700 hover:to-pink-700"
+                  className="w-full rounded-xl bg-blue-500 px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-blue-600"
                 >
                   Verify code
                 </button>
@@ -166,7 +166,7 @@ function ResetPassword() {
               <div className="text-center">
                 <button
                   onClick={() => setStep("email")}
-                  className="text-sm font-semibold text-purple-700 hover:text-purple-900"
+                  className="text-sm font-semibold text-blue-600 hover:text-blue-700"
                 >
                   Change email
                 </button>
@@ -193,7 +193,7 @@ function ResetPassword() {
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="Create a password"
                     required
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 pr-12 text-slate-900 shadow-sm outline-none transition focus:border-purple-500 focus:ring-4 focus:ring-purple-100"
+                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 pr-12 text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-200"
                   />
                 </div>
               </div>
@@ -207,7 +207,7 @@ function ResetPassword() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Re-enter your password"
                     required
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 pr-12 text-slate-900 shadow-sm outline-none transition focus:border-purple-500 focus:ring-4 focus:ring-purple-100"
+                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 pr-12 text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-200"
                   />
                   <button
                     type="button"
@@ -222,7 +222,7 @@ function ResetPassword() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-5 py-3 font-semibold text-white shadow-lg transition hover:from-purple-700 hover:to-pink-700 disabled:cursor-not-allowed disabled:opacity-70"
+                className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {loading ? "Resetting..." : "Reset password"}
               </button>
@@ -230,10 +230,10 @@ function ResetPassword() {
               <div className="text-center">
                 <button
                   onClick={() => setStep("code")}
-                  className="text-sm font-semibold text-purple-700 hover:text-purple-900"
+                  className="text-sm font-semibold text-blue-600 hover:text-blue-700"
                 >
-                  Back
-                </button>
+                  Change code
+                </button> 
               </div>
             </form>
           )}
