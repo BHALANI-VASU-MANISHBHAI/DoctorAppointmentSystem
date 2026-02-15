@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../api/";
 import AppointmentCard from "../components/AppointmentCard";
-import { formatDate, getStatusColor, getUniqueDates, groupSlotsByDate, filterSlotsByDate } from "../utills/helpers.js";
+import { filterSlotsByDate, formatDate, getStatusColor, getUniqueDates, groupSlotsByDate } from "../utills/helpers.js";
 function ViewSlots() {
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(false);

@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import ResetPassword from './pages/ResetPassword'
 import BookSlots from './pages/BookSlots'
 import ViewSlots from './pages/ViewSlots'
+import AddSlot from './pages/AddSlot'
 import Navbar from './components/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -33,6 +34,15 @@ function App() {
           element={
             <ProtectedRoute>
               <ViewSlots />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/add-slot"
+          element={
+            <ProtectedRoute>
+              <AddSlot />
             </ProtectedRoute>
           }
         />

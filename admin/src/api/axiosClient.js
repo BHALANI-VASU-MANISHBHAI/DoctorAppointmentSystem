@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { getErrorMessage } from '../utills/helpers';
 
 const apiClient = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
@@ -24,6 +25,8 @@ apiClient.interceptors.request.use(
         return config;
     },
     (error) => {
+        
+        
         return Promise.reject(error);
     }
 );
@@ -36,19 +39,25 @@ apiClient.interceptors.response.use(
     (error) => {
 
         console.log('API Error:', error.response);
-      if(error.response){
-        if(error.response.status === 401){
-            toast.error("Session expired. Please log in again.");
-            localStorage.removeItem('token');
-            window.location.replace('/login');
-        }else if(error.response.status==403){
-            toast.error("unauthorized. You don't have permission to perform this action.");
-        }else if(error.response.data){
-            toast.error(error.response.data || "An error occurred. Please try again.");
-        }else{
-            toast.error("An error occurred. Please try again.");
+        console.log('API Error Data:',getErrorMessage(error));
+      if (error.response) {
+        if (error.response.status === 401) {
+          toast.error("Session expired. Please log in again.");
+          localStorage.removeItem("token");
+          window.location.replace("/login");
+        } else if (error.response.status == 403) {
+          toast.error(
+            "unauthorized. You don't have permission to perform this action.",
+          );
+        } else if (error.response.data) {
+          toast.error(
+            error.response.data || "An error occurred. Please try again.",
+          );
+        } else {
+          toast.error("An error occurred. Please try again.");
         }
-
+      } else {
+        toast.error("Network error. Please check your connection.");
       }
         
         return Promise.reject(error);

@@ -1,31 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { adminAPI } from "../api/adminAPI.js";
-import { toast } from "react-toastify";
+import { DoctorContext } from "../contexts/DoctorContext.jsx";
 
 function AllDoctors() {
   const navigate = useNavigate();
-  const [doctors, setDoctors] = useState([]);
-  const [loading, setLoading] = useState(false);
+
+  const {doctors} = useContext(DoctorContext);
+
   const [searchTerm, setSearchTerm] = useState("");
-
-  async function fetchAllDoctors() {
-    try {
-      setLoading(true);
-      const response = await adminAPI.getAllDoctors();
-      console.log("Doctors:", response.data);
-      setDoctors(response.data || []);
-    } catch (error) {
-      toast.error(error.response?.data || "Failed to fetch doctors");
-      console.error("Error:", error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    fetchAllDoctors();
-  }, []);
 
   const filteredDoctors = doctors.filter(
     (doctor) =>
@@ -34,19 +16,7 @@ function AllDoctors() {
       doctor.specialization?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleDeleteDoctor = async (doctorId) => {
-    if (window.confirm("Are you sure you want to delete this doctor?")) {
-      try {
-        await adminAPI.deleteDoctor(doctorId);
-        toast.success("Doctor deleted successfully");
-        fetchAllDoctors();
-      } catch (error) {
-        toast.error(error.response?.data || "Failed to delete doctor");
-        console.error("Error:", error);
-      }
-    }
-  };
-
+  
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -85,18 +55,9 @@ function AllDoctors() {
           </div>
         </div>
 
-        {/* Loading State */}
-        {loading && (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12">
-            <div className="flex flex-col items-center justify-center">
-              <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
-              <p className="text-gray-600 font-medium">Loading doctors...</p>
-            </div>
-          </div>
-        )}
-
+      
         {/* Empty State */}
-        {!loading && doctors.length === 0 && (
+        { doctors.length === 0 && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12">
             <div className="flex flex-col items-center justify-center text-center">
               <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6">
@@ -111,7 +72,7 @@ function AllDoctors() {
         )}
 
         {/* No Search Results */}
-        {!loading && doctors.length > 0 && filteredDoctors.length === 0 && (
+        { doctors.length > 0 && filteredDoctors.length === 0 && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12">
             <div className="flex flex-col items-center justify-center text-center">
               <svg className="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,7 +85,7 @@ function AllDoctors() {
         )}
 
         {/* Doctors Grid */}
-        {!loading && filteredDoctors.length > 0 && (
+        { filteredDoctors.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredDoctors.map((doctor) => (
               <div
@@ -202,17 +163,17 @@ function AllDoctors() {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <button className="px-4 py-2 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-all duration-200 text-sm flex items-center justify-center gap-2">
-                      
+                  <div className="grid grid-cols-1   gap-3">
+                    <button 
+                      onClick={() => navigate(`/doctor-info/${doctor.id}`, { state: { doctor } })}
+                      className="px-4 py-2 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-all duration-200 text-sm flex items-center justify-center gap-2"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
                       View
                     </button>
-                    <button 
-                      onClick={() => handleDeleteDoctor(doctor.id)}
-                      className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-all duration-200 text-sm flex items-center justify-center gap-2"
-                    >
-                      Delete
-                    </button>
+                    
                   </div>
                 </div>
               </div>
@@ -221,7 +182,7 @@ function AllDoctors() {
         )}
 
         {/* Results Count */}
-        {!loading && doctors.length > 0 && (
+        { doctors.length > 0 && (
           <div className="mt-8 text-center text-gray-600">
             <p>
               Showing <span className="font-semibold text-gray-900">{filteredDoctors.length}</span> of{" "}

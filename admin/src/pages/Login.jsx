@@ -1,9 +1,8 @@
-import { useState, useContext } from "react";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
 import API from "../api/index.js";
-import { useNavigate } from "react-router-dom";
-import GlobalContext from "../contexts/GlobalContext";
+import { GlobalContext } from "../contexts/GlobalContext.jsx";
 function Login() {
   const navigate = useNavigate();
   const { setToken } = useContext(GlobalContext);
@@ -27,7 +26,6 @@ function Login() {
       console.log("Admin login response:", response.data);
     } catch (error) {
       console.error("Admin login error:", error.response);
-      toast.error(error.response?.data || "Login failed");
     } finally {
       setLoading(false);
     }

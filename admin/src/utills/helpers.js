@@ -244,3 +244,24 @@ export const getTodayDate = () => {
 export const formatTimeRange = (startTime, endTime) => {
   return `${formatTime(startTime)} - ${formatTime(endTime)}`;
 };
+
+
+
+export const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+
+
+
+
+
+export const getErrorMessage = (error) => {
+ 
+  console.log('Error Wow:', error.response?.data);
+
+  console.error("Error:", error);
+
+  return "An error occurred. Please try again.";
+}

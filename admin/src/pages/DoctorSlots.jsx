@@ -1,39 +1,18 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { adminAPI } from "../api/adminAPI.js";
 import { toast } from "react-toastify";
+import { adminAPI } from "../api/adminAPI.js";
+import { DoctorContext } from "../contexts/DoctorContext.jsx";
+import { SLOT_STATUSES } from "../utills/constants.js";
 import { formatDate, getStatusColor, groupSlotsByDate } from "../utills/helpers.js";
 
 function DoctorSlots() {
   const navigate = useNavigate();
-  const [doctors, setDoctors] = useState([]);
+  const { doctors } = useContext(DoctorContext);
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [doctorsLoading, setDoctorsLoading] = useState(true);
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("AVAILABLE");
-
-  const statuses = ["AVAILABLE", "BOOKED"];
-
-  // Fetch doctors on mount
-  useEffect(() => {
-    const fetchDoctors = async () => {
-      try {
-        setDoctorsLoading(true);
-        const response = await adminAPI.getAllDoctors();
-        setDoctors(response.data || []);
-        if (response.data && response.data.length > 0) {
-          setSelectedDoctor(response.data[0].id.toString());
-        }
-      } catch (error) {
-        toast.error(error.response?.data || "Failed to fetch doctors");
-        console.error("Error:", error);
-      } finally {
-        setDoctorsLoading(false);
-      }
-    };
-    fetchDoctors();
-  }, []);
 
   // Fetch slots when doctor or status changes
   useEffect(() => {
@@ -47,12 +26,10 @@ function DoctorSlots() {
 
     try {
       setLoading(true);
-      const status = selectedStatus === "all" ? "ALL" : selectedStatus;
-      const response = await adminAPI.getDoctorSlotsByStatus(selectedDoctor, status);
+      const response = await adminAPI.getDoctorSlotsByStatus(selectedDoctor, selectedStatus);
       console.log("Doctor slots:", response.data);
       setSlots(response.data || []);
     } catch (error) {
-      toast.error(error.response?.data || "Failed to fetch slots");
       console.error("Error:", error);
       setSlots([]);
     } finally {
@@ -66,10 +43,10 @@ function DoctorSlots() {
     if (window.confirm("Are you sure you want to delete this slot?")) {
       try {
         await adminAPI.deleteSlot(slotId);
+        setSlots(prevSlots => prevSlots.filter(slot => slot.id !== slotId));
         toast.success("Slot deleted successfully");
-        fetchSlots();
       } catch (error) {
-        toast.error(error.response?.data || "Failed to delete slot");
+        await fetchSlots();
         console.error("Error:", error);
       }
     }
@@ -95,24 +72,18 @@ function DoctorSlots() {
             <label className="block text-sm font-semibold text-gray-900 mb-2">
               Select Doctor
             </label>
-            {doctorsLoading ? (
-              <div className="flex items-center gap-2 text-gray-500 text-sm">
-                <div className="w-4 h-4 border-2 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-                Loading...
-              </div>
-            ) : (
-              <select
-                value={selectedDoctor}
-                onChange={(e) => setSelectedDoctor(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-200"
-              >
-                {doctors.map((doctor) => (
-                  <option key={doctor.id} value={doctor.id}>
-                    {doctor.name} - {doctor.specialization}
-                  </option>
-                ))}
-              </select>
-            )}
+            <select
+              value={selectedDoctor}
+              onChange={(e) => setSelectedDoctor(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-200"
+            >
+              <option value="">Choose a doctor</option>
+              {doctors.map((doctor) => (
+                <option key={doctor.id} value={doctor.id}>
+                  {doctor.name} - {doctor.specialization}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Status Filter */}
@@ -121,7 +92,7 @@ function DoctorSlots() {
               Filter by Status
             </label>
             <div className="flex gap-2 flex-wrap">
-              {statuses.map((status) => (
+              {SLOT_STATUSES.map((status) => (
                 <button
                   key={status}
                   onClick={() => setSelectedStatus(status)}
@@ -142,7 +113,7 @@ function DoctorSlots() {
         {selectedDoctorData && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-3xl flex-shrink-0">
+              <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-3xl shrink-0">
                 {selectedDoctorData.profilePictureUrl ? (
                   <img
                     src={selectedDoctorData.profilePictureUrl}

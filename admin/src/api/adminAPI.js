@@ -40,15 +40,23 @@ export const adminAPI = {
         console.log("Get Doctor Slots By Status API response:", responce.data);
         return responce;
     },
-    uploadImage:async(formData)=>{
-        const responce = await apiClient.post(API_ENDPOINTS.UPLOAD_IMAGE, formData, {
+    uploadImage:async(formData)=>{        const responce = await apiClient.post(API_ENDPOINTS.UPLOAD_IMAGE, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         });
         console.log("Upload Image API response:", responce.data);
         return responce;
-    }
-
-
+    },
+    updateDoctor:async(data)=>{
+        console.log("Updating doctor with data:", data);
+        const responce = await apiClient.put(API_ENDPOINTS.UPDATE_DOCTOR,data);
+        console.log("Update Doctor API response:", responce.data);
+        return responce;
+    },
+    getSpecificDoctor:async(doctorId)=>{
+        const responce = await apiClient.get(API_ENDPOINTS.GET_SPECIFIC_DOCTOR(doctorId));
+        console.log("Get Specific Doctor API response:", responce.data);
+        return responce;
+    },
 }

@@ -5,7 +5,9 @@ import VerifyAccount from './pages/VerifyAccount'
 import ResetPassword from './pages/ResetPassword'
 import Home from './pages/Home'
 import DoctorSlot from './pages/DoctorSlot'
+import AboutDoctor from './pages/AboutDoctor'
 import Appointment from './pages/Appointment'
+import Profile from './pages/Profile'
 import Navbar from './components/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
@@ -45,10 +47,30 @@ function App() {
         />
 
         <Route
+          path="/doctor/:id/about"
+          element={
+            <ProtectedRoute>
+              <AboutDoctor />
+            </ProtectedRoute>
+          }
+        />
+
+        
+
+        <Route
           path="/appointments"
           element={
             <ProtectedRoute>
               <Appointment />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

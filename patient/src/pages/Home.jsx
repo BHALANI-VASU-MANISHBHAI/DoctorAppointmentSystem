@@ -1,40 +1,24 @@
-import { useEffect, useState } from "react";
-import API from "../api/index.js";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { DoctorContext } from "../contexts/DoctorContext.jsx";
 
 function Home() {
-  const [doctors, setDoctors] = useState([]);
+
+  const {doctors} = useContext(DoctorContext);
+
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSpecialization, setSelectedSpecialization] = useState("all");
 
-  async function fetchAllDoctors() {
-    try {
-      setLoading(true);
-      const data = await API.patient.getAllDoctors();
-      setDoctors(data);
-    } catch (error) {
-      console.error("Error fetching doctors:", error);
-    } finally {
-      setLoading(false);
-    }
-  }
+   const specializations = doctors ? [...new Set(doctors.map(d => d.specialization))].filter(Boolean) : [];
 
-  useEffect(() => {
-    fetchAllDoctors();
-  }, []);
-
-  // Get unique specializations
-  const specializations = [...new Set(doctors.map(d => d.specialization))].filter(Boolean);
-
-  // Filter doctors based on search and specialization
-  const filteredDoctors = doctors.filter(doctor => {
+  const filteredDoctors = doctors ? doctors.filter(doctor => {
     const matchesSearch = doctor.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          doctor.specialization?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesSpecialization = selectedSpecialization === "all" || 
                                   doctor.specialization === selectedSpecialization;
     return matchesSearch && matchesSpecialization;
-  });
+  }) : [];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -120,7 +104,7 @@ function Home() {
               </div>
               <div>
                 <p className="text-3xl font-bold text-gray-900">
-                  {doctors.length}+
+                  {doctors?.length || 0}+
                 </p>
                 <p className="text-sm text-gray-600">Expert Doctors</p>
               </div>
@@ -274,7 +258,7 @@ function Home() {
                     {doctor.profilePictureUrl ? (
                       <img
                         src={doctor.profilePictureUrl}
-                        alt={`Dr. ${doctor.name}`}
+                        alt={`${doctor.name}`}
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -293,13 +277,13 @@ function Home() {
                 {/* Doctor Info */}
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    Dr. {doctor.name}
+                    {doctor.name}
                   </h3>
 
                   <div className="space-y-2 mb-5">
                     <div className="flex items-center gap-2 text-gray-600">
                       <svg
-                        className="w-5 h-5 text-blue-500 flex-shrink-0"
+                        className="w-5 h-5 text-blue-500 shrink-0"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -318,7 +302,7 @@ function Home() {
 
                     <div className="flex items-center gap-2 text-gray-600">
                       <svg
-                        className="w-5 h-5 text-emerald-500 flex-shrink-0"
+                        className="w-5 h-5 text-emerald-500 shrink-0"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -338,7 +322,7 @@ function Home() {
                     {doctor.user?.email && (
                       <div className="flex items-center gap-2 text-gray-600">
                         <svg
-                          className="w-5 h-5 text-gray-400 flex-shrink-0"
+                          className="w-5 h-5 text-gray-400 shrink-0"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -358,25 +342,47 @@ function Home() {
                   </div>
 
                   {/* Action Buttons */}
-                  <Link
-                    to={`/doctor/${doctor.id}/slots`}
-                    className="flex items-center justify-center gap-2 w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-medium transition-all duration-200 shadow-sm hover:shadow-md group-hover:scale-[1.02]"
-                  >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                  <div className="flex gap-3">
+                    <Link
+                      to={`/doctor/${doctor.id}/about`}
+                      state={{ doctor }}
+                      className="flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-medium transition-all duration-200 shadow-sm hover:shadow-md"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                    <span>View Available Slots</span>
-                  </Link>
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      <span>View Profile</span>
+                    </Link>
+                    <Link
+                      to={`/doctor/${doctor.id}/slots`}
+                      className="flex-1 flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-medium transition-all duration-200 shadow-sm hover:shadow-md group-hover:scale-[1.02]"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                      <span>Book</span>
+                    </Link>
+                  </div>
                 </div>
 
                 {/* Bottom accent */}

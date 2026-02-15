@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
-const GlobalContext = React.createContext()
+export const GlobalContext = React.createContext()
 
 export const GlobalContextProvider = ({ children }) => {
   const [token, setToken] = React.useState(
@@ -31,4 +31,3 @@ export const GlobalContextProvider = ({ children }) => {
   )
 }
 
-export default GlobalContext

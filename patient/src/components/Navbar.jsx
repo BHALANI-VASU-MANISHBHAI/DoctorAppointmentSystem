@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
-import GlobalContext from "../contexts/GlobalContext";
+import { GlobalContext } from "../contexts/GlobalContext";
 
 function Navbar() {
   const { token, setToken } = useContext(GlobalContext);
@@ -25,12 +25,8 @@ function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <span className="font-bold text-xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            
+            <span className="font-bold text-xl bg-blue-500 bg-clip-text text-transparent">
               MediBook
             </span>
           </Link>
@@ -58,6 +54,19 @@ function Navbar() {
               </svg>
               My Appointments
             </Link>
+            <Link
+              to="/profile"
+              className={`flex items-center gap-2 font-medium transition-colors ${
+                location.pathname === "/profile"
+                  ? "text-blue-600"
+                  : "text-gray-700 hover:text-blue-600"
+              }`}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              My Profile
+            </Link>
           </div>
 
           {/* Mobile Menu + Logout */}
@@ -75,6 +84,19 @@ function Navbar() {
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </Link>
+              <Link
+                to="/profile"
+                className={`p-2 rounded-lg transition-colors ${
+                  location.pathname === "/profile"
+                    ? "bg-blue-100 text-blue-600"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
+                title="My Profile"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
               </Link>
             </div>

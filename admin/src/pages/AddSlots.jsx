@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { adminAPI } from "../api/adminAPI.js";
+import { DoctorContext } from "../contexts/DoctorContext.jsx";
 
 function AddSlots() {
+
+  const { doctors } = useContext(DoctorContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [doctors, setDoctors] = useState([]);
-  const [doctorsLoading, setDoctorsLoading] = useState(true);
   
   const [formData, setFormData] = useState({
     doctorId: "",
@@ -15,23 +16,6 @@ function AddSlots() {
     startTime: "",
     endTime: "",
   });
-
-  // Fetch doctors on component mount
-  useEffect(() => {
-    const fetchDoctors = async () => {
-      try {
-        setDoctorsLoading(true);
-        const response = await adminAPI.getAllDoctors();
-        setDoctors(response.data || []);
-      } catch (error) {
-        toast.error("Failed to fetch doctors");
-        console.error("Error:", error);
-      } finally {
-        setDoctorsLoading(false);
-      }
-    };
-    fetchDoctors();
-  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -44,40 +28,14 @@ function AddSlots() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
-    if (!formData.doctorId) {
-      toast.error("Please select a doctor");
-      return;
-    }
-    if (!formData.date) {
-      toast.error("Please select a date");
-      return;
-    }
-    if (!formData.startTime) {
-      toast.error("Please select start time");
-      return;
-    }
-    if (!formData.endTime) {
-      toast.error("Please select end time");
-      return;
-    }
-
-    // Validate time format and that end time is after start time
-    const [startHour, startMin] = formData.startTime.split(":").map(Number);
-    const [endHour, endMin] = formData.endTime.split(":").map(Number);
-    
-    const startTotalMin = startHour * 60 + startMin;
-    const endTotalMin = endHour * 60 + endMin;
-
-    if (endTotalMin <= startTotalMin) {
+    if (formData.endTime <= formData.startTime) {
       toast.error("End time must be after start time");
       return;
     }
 
     try {
       setLoading(true);
-      
-      // Format times to ISO format with the selected date
+    
       const startDateTime = `${formData.date}T${formData.startTime}:00`;
       const endDateTime = `${formData.date}T${formData.endTime}:00`;
 
@@ -90,12 +48,10 @@ function AddSlots() {
       toast.success("Slot added successfully!");
       console.log("Add Slot response:", response.data);
 
-      // Reset form and redirect
       setFormData({ doctorId: "", date: "", startTime: "", endTime: "" });
       navigate("/all-slots");
     } catch (error) {
       console.error("Error:", error);
-      toast.error(error.response?.data?.message || "Failed to add slot");
     } finally {
       setLoading(false);
     }
@@ -132,27 +88,20 @@ function AddSlots() {
               <label className="block text-sm font-semibold text-gray-900 mb-2">
                 Select Doctor <span className="text-red-600">*</span>
               </label>
-              {doctorsLoading ? (
-                <div className="flex items-center gap-2 text-gray-500">
-                  <div className="w-4 h-4 border-2 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-                  Loading doctors...
-                </div>
-              ) : (
-                <select
-                  name="doctorId"
-                  value={formData.doctorId}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-200"
-                >
-                  <option value="">Choose a doctor</option>
-                  {doctors.map((doctor) => (
-                    <option key={doctor.id} value={doctor.id}>
-                      {doctor.name} - {doctor.specialization} ({doctor.experience}y)
-                    </option>
-                  ))}
-                </select>
-              )}
+              <select
+                name="doctorId"
+                value={formData.doctorId}
+                onChange={handleInputChange}
+                required
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-200"
+              >
+                <option value="">Choose a doctor</option>
+                {doctors.map((doctor) => (
+                  <option key={doctor.id} value={doctor.id}>
+                    {doctor.name} - {doctor.specialization} ({doctor.experience}y)
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Date Field */}

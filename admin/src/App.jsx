@@ -7,6 +7,8 @@ import AddDoctor from './pages/AddDoctor'
 import AllSlots from './pages/AllSlots'
 import AddSlots from './pages/AddSlots'
 import DoctorSlots from './pages/DoctorSlots'
+import AdminAboutDoctor from './pages/AdminAboutDoctor'
+import EditDoctor from './pages/EditDoctor'
 import AdminNavbar from './components/AdminNavbar'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -22,6 +24,8 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/all-doctors" element={<ProtectedRoute><AllDoctors /></ProtectedRoute>} />
         <Route path="/add-doctor" element={<ProtectedRoute><AddDoctor /></ProtectedRoute>} />
+        <Route path="/doctor-info/:id" element={<ProtectedRoute><AdminAboutDoctor /></ProtectedRoute>} />
+        <Route path="/edit-doctor/:id" element={<ProtectedRoute><EditDoctor /></ProtectedRoute>} />
         <Route path="/all-slots" element={<ProtectedRoute><AllSlots /></ProtectedRoute>} />
         <Route path="/add-slots" element={<ProtectedRoute><AddSlots /></ProtectedRoute>} />
         <Route path="/doctor-slots" element={<ProtectedRoute><DoctorSlots /></ProtectedRoute>} />

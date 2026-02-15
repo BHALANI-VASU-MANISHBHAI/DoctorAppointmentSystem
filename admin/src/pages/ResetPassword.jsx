@@ -21,7 +21,7 @@ function ResetPassword() {
       toast.success("Reset code sent to your email");
       setStep("code");
     } catch (error) {
-      toast.error(error.response?.data || "Failed to send reset code");
+      console.error("Error:", error);
     } finally {
       setLoading(false);
     }
@@ -42,7 +42,7 @@ function ResetPassword() {
       navigate("/login");
     } catch (error) {
         console.log(error.response?.data);
-      toast.error(error.response?.data || "Failed to reset password");
+        console.error("Error:", error);
     } finally {
       setLoading(false);
     }

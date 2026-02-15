@@ -7,7 +7,7 @@ export const API_ENDPOINTS = {
     // ------------------------Doctor------------------------
     GET_OWN_SLOTS: '/doctor/slots',
     GET_BOOKED_APPOINTMENTS: '/doctor/appointments',
-    
+    ADD_SLOT: `/doctor/slots`,
 
     // ------------------------password --------------------------
      FORGET_PASSWORD: '/password/forget',

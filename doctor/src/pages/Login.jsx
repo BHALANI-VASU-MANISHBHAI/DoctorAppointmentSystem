@@ -17,14 +17,13 @@ function Login() {
     setLoading(true);
     console.log("Attempting doctor login with:", { email, password });
     try {
-      // TODO: Implement doctor login API call
       const { token } = await API.auth.login({ email, password });
       console.log("Received token from API:", token);
       setToken(token);
       toast.success("Doctor login successful");
       navigate("/view-slots");
     } catch (error) {
-        console.error("Doctor login error:", error);
+      console.error("Doctor login error:", error);
       toast.error(error.response?.data || "Login failed");
     } finally {
       setLoading(false);

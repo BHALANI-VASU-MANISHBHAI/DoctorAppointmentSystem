@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import GlobalContext from "../contexts/GlobalContext";
 import API from "../api";
+import { GlobalContext } from "../contexts/GlobalContext";
 
 function Login() {
     const [loading, setLoading] = useState(false);

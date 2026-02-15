@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { adminAPI } from "../api/adminAPI.js";
+import { SPECIALIZATIONS } from "../utills/constants.js";
 
 function AddDoctor() {
   const navigate = useNavigate();
@@ -24,21 +25,6 @@ function AddDoctor() {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(null);
-
-  const specializations = [
-    "Cardiologist",
-    "Neurologist",
-    "Pediatrician",
-    "Dermatologist",
-    "Orthopedist",
-    "Psychiatrist",
-    "Radiologist",
-    "Oncologist",
-    "General Practitioner",
-    "ENT",
-    "Ophthalmologist",
-    "Dentist",
-  ];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -108,7 +94,7 @@ function AddDoctor() {
       
       // Store the full response object (publicId and url) - Cloudinary response structure
       const responseData = {
-        publicId: uploadResponse.data.publicid,
+        publicId: uploadResponse.data.publicId,
         url: uploadResponse.data.url,
       };
       
@@ -124,7 +110,6 @@ function AddDoctor() {
       localStorage.setItem("uploadedDoctorImage", JSON.stringify(responseData));
     } catch (error) {
       console.error("Error uploading image:", error);
-      toast.error(error.response?.data?.message || "Failed to upload image");
     } finally {
       setUploadingImage(false);
     }
@@ -143,28 +128,14 @@ function AddDoctor() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
-    if (!formData.name.trim()) {
-      toast.error("Doctor name is required");
-      return;
-    }
-    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      toast.error("Valid email is required");
-      return;
-    }
-    if (!formData.specialization) {
-      toast.error("Please select a specialization");
-      return;
-    }
-    if (!formData.experience || formData.experience < 0) {
-      toast.error("Experience must be a valid number");
+    if (!uploadedImage?.publicId) {
+      toast.error("Please upload a profile picture");
       return;
     }
 
     try {
       setLoading(true);
       
-      // Prepare JSON payload instead of FormData
       const jsonPayload = {
         name: formData.name,
         email: formData.email,
@@ -172,8 +143,8 @@ function AddDoctor() {
         experience: parseInt(formData.experience),
         bio: formData.bio,
         degrees: formData.degrees,
-        profilePictureUrl: formData.profilePictureUrl || null,
-        profilePicturePublicId: uploadedImage?.publicId || null,
+        profilePictureUrl: uploadedImage?.url || null,
+        profilePublicId: uploadedImage?.publicId || null,
       };
 
       const response = await adminAPI.addNewDoctor(jsonPayload);
@@ -189,7 +160,6 @@ function AddDoctor() {
       navigate("/all-doctors");
     } catch (error) {
       console.error("Error:", error);
-      toast.error(error.response?.data?.message || "Failed to add doctor");
     } finally {
       setLoading(false);
     }
@@ -294,7 +264,7 @@ function AddDoctor() {
                 className="w-full px-4 py-3 rounded-xl border border-gray-500 bg-white shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-200"
               >
                 <option value="">Select a specialization</option>
-                {specializations.map((spec) => (
+                {SPECIALIZATIONS.map((spec) => (
                   <option key={spec} value={spec}>
                     {spec}
                   </option>
@@ -506,7 +476,7 @@ function AddDoctor() {
         {/* Info Box */}
         <div className="mt-8 bg-blue-50 border border-blue-200 rounded-xl p-4">
           <div className="flex gap-3">
-            <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+            <svg className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zm-11-1a1 1 0 11-2 0 1 1 0 012 0zM10 7a1 1 0 11-2 0 1 1 0 012 0zm5 0a1 1 0 11-2 0 1 1 0 012 0z" clipRule="evenodd" />
             </svg>
             <div>
