@@ -22,7 +22,7 @@ function Login() {
       const token = response.data.token || response.data;
       setToken(token);
       toast.success("Admin login successful");
-      navigate("/all-doctors");
+      navigate("/admin/all-doctors");
       console.log("Admin login response:", response.data);
     } catch (error) {
       console.error("Admin login error:", error.response);

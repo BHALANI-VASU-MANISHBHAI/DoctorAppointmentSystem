@@ -12,7 +12,6 @@ export const DoctorContextProvider = ({ children }) => {
   const fetchDoctors = async () => {
     try {
       const response = await API.patient.getAllDoctors();
-      
       console.log("Fetched doctors from context:", response);
       setDoctors(response);
     } catch (error) {

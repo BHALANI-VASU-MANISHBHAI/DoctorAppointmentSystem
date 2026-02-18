@@ -21,7 +21,7 @@ function Login() {
       console.log("Received token from API:", token);
       setToken(token);
       toast.success("Doctor login successful");
-      navigate("/view-slots");
+      navigate("/doctor/view-slots");
     } catch (error) {
       console.error("Doctor login error:", error);
     } finally {

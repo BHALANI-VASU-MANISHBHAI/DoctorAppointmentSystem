@@ -42,7 +42,7 @@ export const patientAPI = {
         return response.data;
     },
     getSpecificDoctor: async (doctorId) => {
-        const response = await apiClient.get(API_ENDPOINTS.GET_SPECIFIC_DOCTOR(doctorId));
+        const response = await apiClient.get(API_ENDPOINTS.PATIENT_GET_SPECIFIC_DOCTOR_PATIENT(doctorId));
         console.log("Get Specific Doctor API response:", response.data);
         return response.data;
     },
