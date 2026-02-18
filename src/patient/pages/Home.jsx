@@ -344,7 +344,7 @@ function Home() {
                   {/* Action Buttons */}
                   <div className="flex gap-3">
                     <Link
-                      to={`/doctor/${doctor.id}/about`}
+                      to={`/doctors/${doctor.id}/about`}
                       state={{ doctor }}
                       className="flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-medium transition-all duration-200 shadow-sm hover:shadow-md"
                     >
@@ -364,7 +364,7 @@ function Home() {
                       <span>View Profile</span>
                     </Link>
                     <Link
-                      to={`/doctor/${doctor.id}/slots`}
+                      to={`/doctors/${doctor.id}/slots`}
                       className="flex-1 flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-medium transition-all duration-200 shadow-sm hover:shadow-md group-hover:scale-[1.02]"
                     >
                       <svg

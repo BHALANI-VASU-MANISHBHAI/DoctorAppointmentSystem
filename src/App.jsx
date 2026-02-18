@@ -91,8 +91,8 @@ function PatientApp() {
 
         {/* Protected routes */}
         <Route path="/" element={<PatientProtectedRoute><Home /></PatientProtectedRoute>} />
-        <Route path="/doctor/:id/slots" element={<PatientProtectedRoute><DoctorSlot /></PatientProtectedRoute>} />
-        <Route path="/doctor/:id/about" element={<PatientProtectedRoute><AboutDoctor /></PatientProtectedRoute>} />
+        <Route path="/doctors/:id/slots" element={<PatientProtectedRoute><DoctorSlot /></PatientProtectedRoute>} />
+        <Route path="/doctors/:id/about" element={<PatientProtectedRoute><AboutDoctor /></PatientProtectedRoute>} />
         <Route path="/appointments" element={<PatientProtectedRoute><Appointment /></PatientProtectedRoute>} />
         <Route path="/profile" element={<PatientProtectedRoute><Profile /></PatientProtectedRoute>} />
       </Routes>

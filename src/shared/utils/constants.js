@@ -24,7 +24,7 @@ export const API_ENDPOINTS = {
   GET_ALL_DOCTORS_PATIENT: '/doctor/all',
   GET_DOCTOR_SLOTS: (doctorId) => `/patient/doctors/${doctorId}/slots`,
   BOOK_APPOINTMENT: '/patient/appointments',
-  GET_OWN_APPOINTMENTS: '/patient/appointments',  
+  PATIENT_GET_OWN_APPOINTMENTS: '/patient/appointments',  
   CANCEL_APPOINTMENT: (appointmentId) => `/patient/${appointmentId}`,
   GET_SPECIFIC_DOCTOR_PATIENT: (doctorId) => `/patient/doctors/${doctorId}`,
   

@@ -116,7 +116,7 @@ const AboutDoctor = () => {
               )}
 
               <button
-                onClick={() => navigate(`/doctor/${doctor.id}/slots`)}
+                onClick={() => navigate(`/doctors/${doctor.id}/slots`)}
                 className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all duration-200 shadow-sm"
               >
                 Book Appointment

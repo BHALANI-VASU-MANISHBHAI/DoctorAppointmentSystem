@@ -16,7 +16,7 @@ export const patientAPI = {
         return response.data;
     },
     getAllDoctors: async () => {
-        const response = await apiClient.get(API_ENDPOINTS.GET_ALL_DOCTORS);
+        const response = await apiClient.get(API_ENDPOINTS.GET_ALL_DOCTORS_PATIENT);
         console.log("Get All Doctors API response:", response.data);
         return response.data;
     },
@@ -32,7 +32,7 @@ export const patientAPI = {
         return response.data;
     },
     getOwnAppointments: async () => {
-        const response = await apiClient.get(API_ENDPOINTS.GET_OWN_APPOINTMENTS);
+        const response = await apiClient.get(API_ENDPOINTS.PATIENT_GET_OWN_APPOINTMENTS);
         console.log("Get Own Appointments API response:", response.data);
         return response.data;
     },
