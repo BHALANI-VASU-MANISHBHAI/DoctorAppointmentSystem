@@ -18,7 +18,7 @@ function Login() {
     try {
       console.log("Attempting admin login with:", { email, password });
       const response = await API.auth.login({ email, password });
-      
+      console.log("Received response from API:", response.data);
       const token = response.data.token || response.data;
       setToken(token);
       toast.success("Admin login successful");

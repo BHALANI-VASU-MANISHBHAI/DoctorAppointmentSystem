@@ -24,7 +24,6 @@ function Login() {
       navigate("/view-slots");
     } catch (error) {
       console.error("Doctor login error:", error);
-      toast.error(error.response?.data || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -142,8 +141,14 @@ function Login() {
                 </button>
               </form>
 
-              <div className="mt-6 text-center text-sm text-slate-600">
+              <div className="mt-6 flex flex-col gap-3 text-center text-sm text-slate-600">
                 <p>Professional healthcare provider access</p>
+                <span>
+                  Forgot your password?{" "}
+                  <Link to="/reset-password" className="font-semibold text-teal-600 hover:text-teal-700">
+                    Reset it
+                  </Link>
+                </span>
               </div>
             </div>
           </div>

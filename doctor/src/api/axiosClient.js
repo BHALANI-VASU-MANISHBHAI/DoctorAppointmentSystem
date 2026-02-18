@@ -32,7 +32,6 @@ apiClient.interceptors.response.use(
         return response;
     },
     (error) => {
-
         console.log('API Error:', error.response);
       if(error.response){
         if(error.response.status === 401){

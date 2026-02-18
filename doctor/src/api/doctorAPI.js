@@ -17,5 +17,10 @@ export const docotorAPI = {
         const response = await apiClient.post(API_ENDPOINTS.ADD_SLOT, data);
         console.log("Add Slot API response:", response.data);
         return response;
+    },
+    deleteSlot: async (slotId) => {
+        const response = await apiClient.delete(API_ENDPOINTS.DELETE_SLOT(slotId));
+        console.log("Delete Slot API response:", response.data);
+        return response;
     }
 }

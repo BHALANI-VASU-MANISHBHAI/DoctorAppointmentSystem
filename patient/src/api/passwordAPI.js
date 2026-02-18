@@ -7,10 +7,9 @@ export const passwordAPI = {
         console.log("Forget Password API response:", responce.data);
         return responce;
     },
-    resetPassword:async(token, newPassword)=>{
-        const responce = await apiClient.post(`/password/reset?token=${token}`, { newPassword });
+    resetPassword:async(data)=>{
+        const responce = await apiClient.post(API_ENDPOINTS.RESET_PASSWORD, data);
         console.log("Reset Password API response:", responce.data);
         return responce;
     }
-
 }

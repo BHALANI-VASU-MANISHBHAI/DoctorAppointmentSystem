@@ -11,7 +11,6 @@ export const UserContextProvider = ({ children }) => {
     const fetchUser = async () => {
         try {   
             const response = await API.patient.getProfile();
-
             setUser(response);
         } catch (error) {
             console.error("Error fetching user profile:", error);
@@ -19,7 +18,7 @@ export const UserContextProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        if(localStorage.getItem("token")){
+        if(token){
             fetchUser();
         } else {
             setUser(null);

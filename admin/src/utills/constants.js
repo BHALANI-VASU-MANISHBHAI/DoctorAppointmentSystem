@@ -18,7 +18,7 @@ export const API_ENDPOINTS = {
     UPLOAD_IMAGE: '/upload/image',
     // ------------------------Password------------------------
     ForgetPassword: '/password/forget',
-    ResetPassword: '/password/reset',
+     RESET_PASSWORD: (token) => `/password/reset?token=${token}`,
 }
 
 export const SPECIALIZATIONS = [

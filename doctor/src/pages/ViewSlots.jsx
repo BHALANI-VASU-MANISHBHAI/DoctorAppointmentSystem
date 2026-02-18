@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import API from "../api/";
 import AppointmentCard from "../components/AppointmentCard";
 import { filterSlotsByDate, formatDate, getStatusColor, getUniqueDates, groupSlotsByDate } from "../utills/helpers.js";
 function ViewSlots() {
+  const navigate = useNavigate();
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState("all");
@@ -19,6 +22,20 @@ function ViewSlots() {
       setLoading(false);
     }
   }
+
+  const handleDeleteSlot = async (slotId) => {
+    
+    try {
+      // Call delete API
+      await API.doctor.deleteSlot(slotId);
+      setSlots((prev) => prev.filter((slot) => slot.id !== slotId));
+      toast.success("Slot deleted successfully");
+    } catch (error) {
+      console.error("Delete error:", error);
+      getOwnSlots(); // Refresh slots to restore deleted slot on error
+      toast.error(error.response?.data || "Failed to delete slot. Restoring...");
+    }
+  };
 
   useEffect(() => {
     getOwnSlots();
@@ -110,7 +127,9 @@ function ViewSlots() {
                 You haven't created any time slots yet. Create your first slot
                 to accept patient appointments.
               </p>
-              <button className="px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-lg font-medium hover:from-teal-700 hover:to-cyan-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+              <button className="px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-lg font-medium hover:from-teal-700 hover:to-cyan-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+              onClick={()=>navigate("/add-slot")}
+              >
                 Create Time Slot
               </button>
             </div>
@@ -174,6 +193,7 @@ function ViewSlots() {
                       key={slot.id}
                       slot={slot}
                       getStatusColor={getStatusColor}
+                      onDelete={handleDeleteSlot}
                     />
                   ))}
                 </div>

@@ -21,7 +21,7 @@ function Login() {
             toast.success("Login successful");
             navigate("/");
         } catch (error) {
-            toast.error(error.response?.data?.message || "Login failed");
+            console.error(error);
         } finally {
             setLoading(false);
         }

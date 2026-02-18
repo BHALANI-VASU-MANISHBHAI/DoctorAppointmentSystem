@@ -17,10 +17,11 @@ function ResetPassword() {
     e.preventDefault();
     try {
       setLoading(true);
-      await API.auth.sendVerificationCodeEmail({ email });
+      await API.password.forgetPassword({ email });
       toast.success("Reset code sent to your email");
       setStep("code");
     } catch (error) {
+      console.error("Error:", error);
       toast.error(error.response?.data?.message || "Failed to send reset code");
     } finally {
       setLoading(false);
@@ -37,11 +38,13 @@ function ResetPassword() {
 
     try {
       setLoading(true);
-      await API.auth.resetPassword({ email, otp: code, password: newPassword });
+      await API.password.resetPassword({ email, otp: code, newPassword: newPassword });
       toast.success("Password reset successful! You can now login.");
       navigate("/login");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to reset password");
+        console.log(error.response?.data);
+        console.error("Error:", error);
+        toast.error(error.response?.data?.message || "Failed to reset password");
     } finally {
       setLoading(false);
     }
