@@ -3,10 +3,6 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-// Role detection hook
-import { useContext, useEffect, useState } from 'react'
-import { GlobalContext } from './shared/contexts/GlobalContext'
-
 // Admin Pages
 import AdminLogin from './admin/pages/Login'
 import AdminResetPassword from './admin/pages/ResetPassword'
@@ -106,15 +102,6 @@ function PatientApp() {
 
 // Main Router
 function App() {
-  const { token } = useContext(GlobalContext)
-  const [userRole, setUserRole] = useState('patient') // Default to patient
-
-  // Detect user role from URL or token
-  const currentPath = window.location.pathname
-  if (currentPath.startsWith('/admin')) setUserRole('admin')
-  else if (currentPath.startsWith('/doctor')) setUserRole('doctor')
-  else setUserRole('patient')
-
   return (
     <Routes>
       {/* Admin Routes */}
@@ -123,7 +110,7 @@ function App() {
       {/* Doctor Routes */}
       <Route path="/doctor/*" element={<DoctorApp />} />
 
-      {/* Patient Routes  */}
+      {/* Patient Routes (default) */}
       <Route path="/*" element={<PatientApp />} />
     </Routes>
   )
