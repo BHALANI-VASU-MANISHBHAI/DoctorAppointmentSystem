@@ -1,0 +1,31 @@
+
+> doctor-appointment-system@1.0.0 build
+> vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 37 modules transformed.
+✗ Build failed in 785ms
+error during build:
+[vite:esbuild] Transform failed with 1 error:
+/home/vasu/DoctorAppointmentSystem/src/patient/pages/AboutDoctor.jsx:3:44: ERROR: Unterminated string literal
+file: /home/vasu/DoctorAppointmentSystem/src/patient/pages/AboutDoctor.jsx:3:44
+
+Unterminated string literal
+1  |  import { useEffect, useState } from 'react';
+2  |  import { useNavigate, useParams } from 'react-router-dom';
+3  |  import API from "../../shared/api/index.js';
+   |                                              ^
+4  |  const AboutDoctor = () => {
+5  |    const { id } = useParams();
+
+    at failureErrorWithLog (/home/vasu/DoctorAppointmentSystem/node_modules/esbuild/lib/main.js:1467:15)
+    at /home/vasu/DoctorAppointmentSystem/node_modules/esbuild/lib/main.js:736:50
+    at responseCallbacks.<computed> (/home/vasu/DoctorAppointmentSystem/node_modules/esbuild/lib/main.js:603:9)
+    at handleIncomingPacket (/home/vasu/DoctorAppointmentSystem/node_modules/esbuild/lib/main.js:658:12)
+    at Socket.readFromStdout (/home/vasu/DoctorAppointmentSystem/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:191:23)
