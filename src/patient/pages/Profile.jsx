@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import API from "../../shared/api/index.js";
-import { UserContext } from "../../shared/contexts/UserContext.jsx";
+import { PatientContext } from "../contexts/PatientContext.jsx";
+
 
 function Profile() {
-  const { user } = useContext(UserContext);
+  const { patient } = useContext(PatientContext);
   const [updating, setUpdating] = useState(false);
   const [editData, setEditData] = useState({
     name: "",
@@ -13,15 +14,15 @@ function Profile() {
   const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
-    if (user) {
-      const userData = user.data?.data || user.data || user;
+    if (patient) {
+      const userData = patient.data?.data || patient.data || patient;
       setEditData({
         name: userData.name || "",
         profilePicture: null,
       });
       setPreviewImage(userData.profilePictureUrl || null);
     }
-  }, [user]);
+  }, [patient]);
 
   const handleNameChange = (e) => {
     setEditData((prev) => ({
@@ -78,7 +79,7 @@ function Profile() {
     }
   };
 
-  if (!user) {
+  if (!patient) {
     return (
       <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 py-8 px-4 flex items-center justify-center">
         <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
@@ -86,7 +87,7 @@ function Profile() {
     );
   }
 
-  const userData = user.data?.data || user.data || user;
+  const userData = patient.data?.data || patient.data || patient;
 
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 py-8 px-4 sm:px-6 lg:px-8">

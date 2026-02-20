@@ -18,8 +18,7 @@ function ResetPassword() {
     try {
       setLoading(true);
       await API.password.forgetPassword({ email });
-      toast.success("Reset code sent to your email");
-      setStep("code");
+      toast.success("Reset link sent! Please check your email.");
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -39,7 +38,7 @@ function ResetPassword() {
       setLoading(true);
       await API.password.resetPassword({ email, otp: code, newPassword: newPassword });
       toast.success("Password reset successful! You can now login.");
-      navigate("/login");
+      navigate("/admin/login");
     } catch (error) {
         console.log(error.response?.data);
         console.error("Error:", error);
@@ -125,7 +124,7 @@ function ResetPassword() {
 
               <div className="text-center text-sm text-slate-600">
                 Remember your password?{" "}
-                <Link to="/login" className="font-semibold text-blue-600 hover:text-blue-700">
+                <Link to="/admin/login" className="font-semibold text-blue-600 hover:text-blue-700">
                   Sign in
                 </Link>
               </div>

@@ -10,8 +10,8 @@ function Appointment() {
   const fetchAppointments = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await API.patient.getOwnAppointments();
-      setAppointments(data);
+      const response = await API.patient.getOwnAppointments();
+      setAppointments(response.data);
     } catch (err) {
       console.error(err);
     } finally {

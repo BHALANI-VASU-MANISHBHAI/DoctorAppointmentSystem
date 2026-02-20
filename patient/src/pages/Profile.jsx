@@ -4,13 +4,18 @@ import API from "../api/index.js";
 import { UserContext } from "../contexts/UserContext.jsx";
 
 function Profile() {
-  const { user } = useContext(UserContext);
+  const { user, fetchUser, loading } = useContext(UserContext);
   const [updating, setUpdating] = useState(false);
   const [editData, setEditData] = useState({
     name: "",
     profilePicture: null,
   });
   const [previewImage, setPreviewImage] = useState(null);
+
+  // Fetch user profile when page loads
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -78,7 +83,7 @@ function Profile() {
     }
   };
 
-  if (!user) {
+  if (!user || loading) {
     return (
       <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 py-8 px-4 flex items-center justify-center">
         <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>

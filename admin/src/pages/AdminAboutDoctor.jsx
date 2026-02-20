@@ -12,7 +12,7 @@ const AdminAboutDoctor = () => {
     try {
       setLoading(true);
       const response = await adminAPI.getSpecificDoctor(id);
-      setDoctor(response.data);
+      setDoctor(response);
     } catch (error) {
       console.error("Error fetching doctor info:", error);
     } finally {

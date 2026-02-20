@@ -1,12 +1,10 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import API from "../api";
 
 function ResetPassword() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -15,7 +13,7 @@ function ResetPassword() {
   useEffect(() => {
     if (!token) {
       toast.error("Invalid reset link");
-      navigate("/login");
+      navigate("/doctor/login");
     }
   }, [token, navigate]);
 
@@ -41,7 +39,7 @@ function ResetPassword() {
       setLoading(true);
       await API.password.resetPassword(token, newPassword);
       toast.success("Password reset successful! You can now login.");
-      navigate("/login");
+      navigate("/doctor/login");
     } catch (error) {
       const errorMessage = error.response?.data?.message || "Failed to reset password";
       toast.error(errorMessage);

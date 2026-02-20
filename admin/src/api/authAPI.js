@@ -4,6 +4,6 @@ export const authAPI = {
     login:async(data)=>{
         const responce = await apiClient.post(API_ENDPOINTS.LOGIN, data);
         console.log("Login API response:", responce.data);
-        return responce;
+        return responce.data;
     }
 }

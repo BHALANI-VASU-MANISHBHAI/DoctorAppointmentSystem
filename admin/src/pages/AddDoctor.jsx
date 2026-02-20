@@ -150,7 +150,7 @@ function AddDoctor() {
       const response = await adminAPI.addNewDoctor(jsonPayload);
       
       toast.success("Doctor added successfully!");
-      console.log("Add Doctor response:", response.data);
+      console.log("Add Doctor response:", response);
       
       // Reset form and redirect
       setFormData({ name: "", email: "", specialization: "", experience: "", bio: "", profilePictureUrl: null, degrees: [] });

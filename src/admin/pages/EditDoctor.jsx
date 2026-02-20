@@ -1,13 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { adminAPI } from "../../shared/api/adminAPI.js";
-import { DoctorContext } from "../../shared/contexts/DoctorContext.jsx";
-
+import API from "../../shared/api/index.js";
+import { AdminDoctorContext } from "../contexts/AdminDoctorContext.jsx";
 const EditDoctor = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { doctors, setDoctors } = useContext(DoctorContext);
+  const { doctors, setDoctors } = useContext(AdminDoctorContext);
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editData, setEditData] = useState(null);
@@ -16,7 +15,7 @@ const EditDoctor = () => {
   async function fetchDoctor() {
     try {
       setLoading(true);
-      const response = await adminAPI.getSpecificDoctor(id);
+      const response = await API.admin.getSpecificDoctor(id);
       setDoctor(response.data);
       setEditData({
         name: response.data.name,
@@ -136,7 +135,7 @@ const EditDoctor = () => {
       );
 
       toast.success("Doctor profile updated successfully");
-      navigate(`/doctor-info/${id}`);
+      navigate(`/admin/doctor-info/${id}`);
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -175,7 +174,7 @@ const EditDoctor = () => {
       <div className="max-w-4xl mx-auto">
         {/* Back Button */}
         <button
-          onClick={() => navigate(`/doctor-info/${id}`)}
+          onClick={() => navigate(`/admin/doctor-info/${id}`)}
           className="mb-8 flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200"
         >
           <svg
@@ -411,7 +410,7 @@ const EditDoctor = () => {
           {/* Action Buttons */}
           <div className="flex gap-4 pt-8 border-t border-gray-200">
             <button
-              onClick={() => navigate(`/doctor-info/${id}`)}
+              onClick={() => navigate(`/admin/doctor-info/${id}`)}
               className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-all duration-200"
             >
               Cancel

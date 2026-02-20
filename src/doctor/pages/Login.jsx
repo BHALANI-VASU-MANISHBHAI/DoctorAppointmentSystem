@@ -2,11 +2,11 @@ import { useState, useContext } from "react";
 import { toast } from "react-toastify";
 import API from "../../shared/api/index.js";
 import { useNavigate, Link } from "react-router-dom";
-import { GlobalContext } from "../../shared/contexts/GlobalContext";
+import { DoctorGlobalContext } from "../contexts/DoctorGlobalContext.jsx";
 
 function Login() {
   const navigate = useNavigate();
-  const { setToken } = useContext(GlobalContext);
+  const { setToken } = useContext(DoctorGlobalContext);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,9 +17,9 @@ function Login() {
     setLoading(true);
     console.log("Attempting doctor login with:", { email, password });
     try {
-      const { token } = await API.auth.login({ email, password });
-      console.log("Received token from API:", token);
-      setToken(token);
+      const response = await API.auth.login({ email, password });
+      console.log("Login response:", response);
+      setToken(response);
       toast.success("Doctor login successful");
       navigate("/doctor/view-slots");
     } catch (error) {
@@ -141,15 +141,7 @@ function Login() {
                 </button>
               </form>
 
-              <div className="mt-6 flex flex-col gap-3 text-center text-sm text-slate-600">
-                <p>Professional healthcare provider access</p>
-                <span>
-                  Forgot your password?{" "}
-                  <Link to="/reset-password" className="font-semibold text-teal-600 hover:text-teal-700">
-                    Reset it
-                  </Link>
-                </span>
-              </div>
+              
             </div>
           </div>
         </div>

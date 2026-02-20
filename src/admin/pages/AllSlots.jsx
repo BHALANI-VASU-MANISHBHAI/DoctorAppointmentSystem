@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { adminAPI } from "../../shared/api/adminAPI.js";
+import API from "../../shared/api";
 import { formatDate, getStatusColor, groupSlotsByDate } from "../../shared/utils/helpers.js";
 
 function AllSlots() {
@@ -14,7 +14,7 @@ function AllSlots() {
   async function fetchAllSlots() {
     try {
       setLoading(true);
-      const response = await adminAPI.getAllSlots();
+      const response = await API.admin.getAllSlots();
       console.log("All slots:", response.data);
       setSlots(response.data || []);
     } catch (error) {
@@ -29,8 +29,9 @@ function AllSlots() {
     if (!window.confirm("Are you sure you want to delete this slot?")) {
       return;
     }
+    console.log("Deleting slot with ID:", slotId);
     try {
-      await adminAPI.deleteSlot(slotId);
+      await API.admin.deleteSlot(slotId);
       setSlots(prevSlots => prevSlots.filter(slot => slot.slotId !== slotId));
       toast.success("Slot deleted successfully");
     } catch (error) {
@@ -79,7 +80,7 @@ function AllSlots() {
             <p className="text-gray-600 mt-2">View and manage all available appointment slots</p>
           </div>
           <button
-            onClick={() => navigate("/add-slots")}
+            onClick={() => navigate("/admin/add-slots")}
             className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-xl font-semibold shadow-sm hover:bg-blue-600 transition-all duration-200"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

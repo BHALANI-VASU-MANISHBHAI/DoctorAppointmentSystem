@@ -1,5 +1,6 @@
 import { API_ENDPOINTS } from "../utills/constants";
 import apiClient from "./axiosClient";
+import publicClient from "./publicClient";
 export const patientAPI = {
     getProfile: async () => {
         const response = await apiClient.get(API_ENDPOINTS.GET_PROFILE);
@@ -16,12 +17,14 @@ export const patientAPI = {
         return response.data;
     },
     getAllDoctors: async () => {
-        const response = await apiClient.get(API_ENDPOINTS.GET_ALL_DOCTORS);
+        // Use public client for getting all doctors (no authentication needed)
+        const response = await publicClient.get(API_ENDPOINTS.GET_ALL_DOCTORS);
         console.log("Get All Doctors API response:", response.data);
         return response.data;
     },
     getDoctorSlots: async (doctorId) => {
-        const response = await apiClient.get(API_ENDPOINTS.GET_DOCTOR_SLOTS(doctorId));
+        // Use public client for getting doctor slots (no authentication needed)
+        const response = await publicClient.get(API_ENDPOINTS.GET_DOCTOR_SLOTS(doctorId));
         console.log("Get Doctor Slots API response:", response.data);
         return response.data;
     },
@@ -42,7 +45,8 @@ export const patientAPI = {
         return response.data;
     },
     getSpecificDoctor: async (doctorId) => {
-        const response = await apiClient.get(API_ENDPOINTS.GET_SPECIFIC_DOCTOR(doctorId));
+        // Use public client for getting specific doctor (no authentication needed)
+        const response = await publicClient.get(API_ENDPOINTS.GET_SPECIFIC_DOCTOR(doctorId));
         console.log("Get Specific Doctor API response:", response.data);
         return response.data;
     },

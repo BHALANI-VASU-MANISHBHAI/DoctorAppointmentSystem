@@ -7,13 +7,15 @@ function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Don't show navbar on auth pages
-  if (["/login", "/reset-password"].includes(location.pathname)) {
+  if (["/doctor/login", "/doctor/reset-password"].includes(location.pathname)) {
     return null;
   }
 
   const handleLogout = () => {
+    console.log("Logging out...");
     localStorage.removeItem("token");
-    navigate("/login");
+    console.log("Token removed from localStorage");
+    navigate("/doctor/login");
   };
 
   return (
@@ -22,7 +24,7 @@ function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <button
-            onClick={() => navigate("/book-slots")}
+            onClick={() => navigate("/doctor/book-slots")}
             className="flex items-center gap-2 hover:opacity-80 transition"
           >
             <div className="w-10 h-10 bg-gradient-to-br from-teal-600 to-cyan-600 rounded-lg flex items-center justify-center">
@@ -38,9 +40,9 @@ function Navbar() {
           {/* Navigation Links */}
           <div className="hidden md:flex items-center gap-8">
             <button
-              onClick={() => navigate("/book-slots")}
+              onClick={() => navigate("/doctor/book-slots")}
               className={`flex items-center gap-2 font-medium transition-colors ${
-                location.pathname === "/book-slots" ? "text-teal-600" : "text-gray-700 hover:text-teal-600"
+                location.pathname === "/doctor/book-slots" ? "text-teal-600" : "text-gray-700 hover:text-teal-600"
               }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,9 +51,9 @@ function Navbar() {
               Booked Appointments
             </button>
             <button
-              onClick={() => navigate("/view-slots")}
+              onClick={() => navigate("/doctor/view-slots")}
               className={`flex items-center gap-2 font-medium transition-colors ${
-                location.pathname === "/view-slots" ? "text-teal-600" : "text-gray-700 hover:text-teal-600"
+                location.pathname === "/doctor/view-slots" ? "text-teal-600" : "text-gray-700 hover:text-teal-600"
               }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,9 +62,9 @@ function Navbar() {
               My Slots
             </button>
             <button
-              onClick={() => navigate("/add-slot")}
+              onClick={() => navigate("/doctor/add-slot")}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
-                location.pathname === "/add-slot"
+                location.pathname === "/doctor/add-slot"
                   ? "bg-teal-100 text-teal-600"
                   : "bg-teal-50 text-teal-600 hover:bg-teal-100 border border-teal-200"
               }`}
@@ -79,9 +81,9 @@ function Navbar() {
             {/* Mobile Links */}
             <div className="md:hidden flex items-center gap-3">
               <button
-                onClick={() => navigate("/book-slots")}
+                onClick={() => navigate("/doctor/book-slots")}
                 className={`p-2 rounded-lg transition-colors ${
-                  location.pathname === "/book-slots"
+                  location.pathname === "/doctor/book-slots"
                     ? "bg-teal-100 text-teal-600"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
@@ -92,9 +94,9 @@ function Navbar() {
                 </svg>
               </button>
               <button
-                onClick={() => navigate("/view-slots")}
+                onClick={() => navigate("/doctor/view-slots")}
                 className={`p-2 rounded-lg transition-colors ${
-                  location.pathname === "/view-slots"
+                  location.pathname === "/doctor/view-slots"
                     ? "bg-teal-100 text-teal-600"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
@@ -105,9 +107,9 @@ function Navbar() {
                 </svg>
               </button>
               <button
-                onClick={() => navigate("/add-slot")}
+                onClick={() => navigate("/doctor/add-slot")}
                 className={`p-2 rounded-lg transition-colors ${
-                  location.pathname === "/add-slot"
+                  location.pathname === "/doctor/add-slot"
                     ? "bg-teal-100 text-teal-600"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}

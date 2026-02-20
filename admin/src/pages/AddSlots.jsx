@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { adminAPI } from "../api/adminAPI.js";
-import { DoctorContext } from "../contexts/DoctorContext.jsx";
+import  AdminC
 
 function AddSlots() {
 
@@ -46,7 +46,7 @@ function AddSlots() {
       });
 
       toast.success("Slot added successfully!");
-      console.log("Add Slot response:", response.data);
+      console.log("Add Slot response:", response);
 
       setFormData({ doctorId: "", date: "", startTime: "", endTime: "" });
       navigate("/all-slots");

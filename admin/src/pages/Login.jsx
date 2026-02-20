@@ -18,12 +18,12 @@ function Login() {
     try {
       console.log("Attempting admin login with:", { email, password });
       const response = await API.auth.login({ email, password });
-      console.log("Received response from API:", response.data);
-      const token = response.data.token || response.data;
+      console.log("Received response from API:", response);
+      // Extract token - handle both { token: "..." } and direct string
+      const token = response.token || response;
       setToken(token);
       toast.success("Admin login successful");
       navigate("/all-doctors");
-      console.log("Admin login response:", response.data);
     } catch (error) {
       console.error("Admin login error:", error.response);
     } finally {

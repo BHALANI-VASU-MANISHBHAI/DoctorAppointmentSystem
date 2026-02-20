@@ -17,8 +17,10 @@ function Login() {
     setLoading(true);
     console.log("Attempting doctor login with:", { email, password });
     try {
-      const { token } = await API.auth.login({ email, password });
-      console.log("Received token from API:", token);
+      const response = await API.auth.login({ email, password });
+      console.log("Received response from API:", response);
+      const token = typeof response === 'string' ? response : response?.token || response;
+      console.log("Extracted token:", token);
       setToken(token);
       toast.success("Doctor login successful");
       navigate("/view-slots");

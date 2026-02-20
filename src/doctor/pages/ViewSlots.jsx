@@ -27,12 +27,13 @@ function ViewSlots() {
     
     try {
       // Call delete API
+      console.log("Attempting to delete slot with ID:", slotId,"   ",slots[0].slotId);
       await API.doctor.deleteSlot(slotId);
       setSlots((prev) => prev.filter((slot) => slot.id !== slotId));
       toast.success("Slot deleted successfully");
     } catch (error) {
       console.error("Delete error:", error);
-      getOwnSlots(); // Refresh slots to restore deleted slot on error
+      await getOwnSlots(); // Refresh slots to restore deleted slot on error
       toast.error(error.response?.data || "Failed to delete slot. Restoring...");
     }
   };
@@ -128,7 +129,7 @@ function ViewSlots() {
                 to accept patient appointments.
               </p>
               <button className="px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-lg font-medium hover:from-teal-700 hover:to-cyan-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-              onClick={()=>navigate("/add-slot")}
+              onClick={()=>navigate("/doctor/add-slot")}
               >
                 Create Time Slot
               </button>

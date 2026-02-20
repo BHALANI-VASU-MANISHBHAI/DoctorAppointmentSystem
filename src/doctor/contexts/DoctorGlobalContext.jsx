@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-export const GlobalContext = React.createContext();
+export const DoctorGlobalContext = React.createContext();
 
-export const GlobalContextProvider = ({ children }) => {
+export const DoctorGlobalContextProvider = ({ children }) => {
   const [token, setToken] = React.useState(localStorage.getItem("token"));
   const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
-      navigate("/admin/all-doctors");
+      localStorage.setItem("token", token);
+      navigate("/doctor/view-slots");
     }
   }, [token]);
 
@@ -19,6 +20,8 @@ export const GlobalContextProvider = ({ children }) => {
   };
 
   return (
-    <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>
+    <DoctorGlobalContext.Provider value={value}>
+      {children}
+    </DoctorGlobalContext.Provider>
   );
-};
+}

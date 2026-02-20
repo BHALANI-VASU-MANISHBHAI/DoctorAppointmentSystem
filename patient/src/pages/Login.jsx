@@ -16,7 +16,10 @@ function Login() {
         setLoading(true);
 
         try {
-            const { token } = await API.auth.login({ email, password });
+            const response = await API.auth.login({ email, password });
+            console.log("Login response:", response);
+            const token = typeof response === 'string' ? response : response?.token || response;
+            console.log("Setting token:", token);
             setToken(token);
             toast.success("Login successful");
             navigate("/");

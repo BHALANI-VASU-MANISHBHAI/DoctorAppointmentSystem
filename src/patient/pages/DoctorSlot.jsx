@@ -6,6 +6,7 @@ import { formatDate, formatTime, groupBy } from "../../shared/utils/helpers.js";
 
 function DoctorSlot() {
   const doctorId = useParams().id;
+  console.log("Doctor ID from URL:", doctorId); 
   const navigate = useNavigate();
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -16,7 +17,8 @@ function DoctorSlot() {
   async function fetchDoctorSlots() {
     try {
       setLoading(true);
-      const data = await API.patient.getDoctorSlots(doctorId);
+      const response = await API.patient.getDoctorSlots(doctorId);
+      const data = response.data;
       console.log("Fetched doctor slots:", data);
       setSlots(data);
       if (data.length > 0) {

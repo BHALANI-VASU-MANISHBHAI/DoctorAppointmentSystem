@@ -15,8 +15,8 @@ function AllSlots() {
     try {
       setLoading(true);
       const response = await adminAPI.getAllSlots();
-      console.log("All slots:", response.data);
-      setSlots(response.data || []);
+      console.log("All slots:", response);
+      setSlots(response || []);
     } catch (error) {
       console.error("Error:", error);
     } finally {

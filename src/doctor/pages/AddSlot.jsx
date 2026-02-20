@@ -51,7 +51,7 @@ function AddSlot() {
 
       // Navigate to view slots after 1 second
       setTimeout(() => {
-        navigate("/view-slots");
+        navigate("/doctor/view-slots");
       }, 1000);
     } catch (error) {
       console.error("Error adding slot:", error);
@@ -147,7 +147,7 @@ function AddSlot() {
             <div className="flex gap-4 pt-6 border-t border-gray-200">
               <button
                 type="button"
-                onClick={() => navigate("/view-slots")}
+                onClick={() => navigate("/doctor/view-slots")}
                 className="flex-1 px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-all duration-200"
               >
                 Cancel

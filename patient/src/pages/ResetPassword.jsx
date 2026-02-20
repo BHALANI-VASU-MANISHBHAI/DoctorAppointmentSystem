@@ -22,7 +22,7 @@ function ResetPassword() {
       setStep("code");
     } catch (error) {
       console.error("Error:", error);
-      toast.error(error.response?.data?.message || "Failed to send reset code");
+      toast.error(error.response?.data || "Failed to send reset code");
     } finally {
       setLoading(false);
     }
@@ -40,11 +40,11 @@ function ResetPassword() {
       setLoading(true);
       await API.password.resetPassword({ email, otp: code, newPassword: newPassword });
       toast.success("Password reset successful! You can now login.");
-      navigate("/login");
+      navigate("/patient/login");
     } catch (error) {
         console.log(error.response?.data);
         console.error("Error:", error);
-        toast.error(error.response?.data?.message || "Failed to reset password");
+        toast.error(error.response?.data || "Failed to reset password");
     } finally {
       setLoading(false);
     }

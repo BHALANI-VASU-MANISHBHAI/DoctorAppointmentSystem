@@ -14,8 +14,8 @@ function ViewSlots() {
     try {
       setLoading(true);
       const response = await API.doctor.getOwnSlots();
-      console.log("Own slots:", response.data);
-      setSlots(response.data.slots || response.data || []);
+      console.log("Own slots:", response);
+      setSlots(response.slots || response || []);
     } catch (error) {
       console.error("Error:", error);
     } finally {

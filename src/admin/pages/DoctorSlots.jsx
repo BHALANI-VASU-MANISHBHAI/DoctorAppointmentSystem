@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { adminAPI } from "../../shared/api/adminAPI.js";
-import { DoctorContext } from "../../shared/contexts/DoctorContext.jsx";
+import API from "../../shared/api";
+import { AdminDoctorContext } from "../contexts/AdminDoctorContext.jsx";
 import { SLOT_STATUSES } from "../../shared/utils/constants.js";
 import { formatDate, getStatusColor, groupSlotsByDate } from "../../shared/utils/helpers.js";
 
 function DoctorSlots() {
   const navigate = useNavigate();
-  const { doctors } = useContext(DoctorContext);
+  const { doctors } = useContext(AdminDoctorContext);
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState("");
@@ -26,7 +26,7 @@ function DoctorSlots() {
 
     try {
       setLoading(true);
-      const response = await adminAPI.getDoctorSlotsByStatus(selectedDoctor, selectedStatus);
+      const response = await API.admin.getDoctorSlotsByStatus(selectedDoctor, selectedStatus);
       console.log("Doctor slots:", response.data);
       setSlots(response.data || []);
     } catch (error) {
@@ -41,9 +41,10 @@ function DoctorSlots() {
 
   const handleDeleteSlot = async (slotId) => {
     if (window.confirm("Are you sure you want to delete this slot?")) {
+      console.log("Deleting slot with ID:", slotId);
       try {
-        await adminAPI.deleteSlot(slotId);
-        setSlots(prevSlots => prevSlots.filter(slot => slot.id !== slotId));
+        await API.admin.deleteSlot(slotId);
+        setSlots(prevSlots => prevSlots.filter(slot => slot.slotId !== slotId));
         toast.success("Slot deleted successfully");
       } catch (error) {
         await fetchSlots();
@@ -214,7 +215,7 @@ function DoctorSlots() {
 
                         return (
                           <tr
-                            key={slot.id}
+                            key={index}
                             className={`border-b border-gray-100 hover:bg-blue-50/30 transition-colors ${
 
                               index % 2 === 0 ? "bg-white" : "bg-gray-50/20"
@@ -247,7 +248,7 @@ function DoctorSlots() {
                                   </svg>
                                 </button>
                                 <button 
-                                  onClick={() => handleDeleteSlot(slot.id)}
+                                  onClick={() => handleDeleteSlot(slot.slotId)}
                                   className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors" 
                                   title="Delete"
                                 >

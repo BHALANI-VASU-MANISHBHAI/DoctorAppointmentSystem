@@ -5,19 +5,11 @@ import API from "../../shared/api";
 
 function ResetPassword() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (!token) {
-      toast.error("Invalid reset link");
-      navigate("/login");
-    }
-  }, [token, navigate]);
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
@@ -41,7 +33,7 @@ function ResetPassword() {
       setLoading(true);
       await API.password.resetPassword(token, newPassword);
       toast.success("Password reset successful! You can now login.");
-      navigate("/login");
+      navigate("/doctor/login");
     } catch (error) {
       const errorMessage = error.response?.data?.message || "Failed to reset password";
       toast.error(errorMessage);
@@ -111,7 +103,7 @@ function ResetPassword() {
 
             <div className="text-center text-sm text-slate-600">
               Remember your password?{" "}
-              <Link to="/login" className="font-semibold text-teal-700 hover:text-teal-900">
+              <Link to="/doctor/login" className="font-semibold text-teal-700 hover:text-teal-900">
                 Sign in
               </Link>
             </div>

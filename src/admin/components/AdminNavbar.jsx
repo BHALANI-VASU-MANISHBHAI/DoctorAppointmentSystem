@@ -7,13 +7,13 @@ function AdminNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Don't show navbar on auth pages
-  if (["/login", "/reset-password"].includes(location.pathname)) {
+  if (["/admin/login", "/admin/reset-password"].includes(location.pathname)) {
     return null;
   }
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/login");
+    navigate("/admin/login");
   };
 
   return (
@@ -22,7 +22,7 @@ function AdminNavbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <button
-            onClick={() => navigate("/all-doctors")}
+            onClick={() => navigate("/admin/all-doctors")}
             className="flex items-center gap-2 hover:opacity-80 transition"
           >
             <span className="font-bold text-xl bg-blue-500 bg-clip-text text-transparent">
@@ -33,9 +33,9 @@ function AdminNavbar() {
           {/* Navigation Links */}
           <div className="hidden md:flex items-center gap-8">
             <button
-              onClick={() => navigate("/all-doctors")}
+              onClick={() => navigate("/admin/all-doctors")}
               className={`flex items-center gap-2 font-medium transition-colors ${
-                location.pathname === "/all-doctors" ? "text-purple-600" : "text-gray-700 hover:text-purple-600"
+                location.pathname === "/admin/all-doctors" ? "text-purple-600" : "text-gray-700 hover:text-purple-600"
               }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,9 +44,9 @@ function AdminNavbar() {
               All Doctors
             </button>
             <button
-              onClick={() => navigate("/add-doctor")}
+              onClick={() => navigate("/admin/add-doctor")}
               className={`flex items-center gap-2 font-medium transition-colors ${
-                location.pathname === "/add-doctor" ? "text-purple-600" : "text-gray-700 hover:text-purple-600"
+                location.pathname === "/admin/add-doctor" ? "text-purple-600" : "text-gray-700 hover:text-purple-600"
               }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -55,9 +55,9 @@ function AdminNavbar() {
               Add Doctor
             </button>
             <button
-              onClick={() => navigate("/all-slots")}
+              onClick={() => navigate("/admin/all-slots")}
               className={`flex items-center gap-2 font-medium transition-colors ${
-                location.pathname === "/all-slots" ? "text-purple-600" : "text-gray-700 hover:text-purple-600"
+                location.pathname === "/admin/all-slots" ? "text-purple-600" : "text-gray-700 hover:text-purple-600"
               }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,9 +66,9 @@ function AdminNavbar() {
               All Slots
             </button>
             <button
-              onClick={() => navigate("/add-slots")}
+              onClick={() => navigate("/admin/add-slots")}
               className={`flex items-center gap-2 font-medium transition-colors ${
-                location.pathname === "/add-slots" ? "text-purple-600" : "text-gray-700 hover:text-purple-600"
+                location.pathname === "/admin/add-slots" ? "text-purple-600" : "text-gray-700 hover:text-purple-600"
               }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,9 +77,9 @@ function AdminNavbar() {
               Add Slot
             </button>
             <button
-              onClick={() => navigate("/doctor-slots")}
+              onClick={() => navigate("/admin/doctor-slots")}
               className={`flex items-center gap-2 font-medium transition-colors ${
-                location.pathname === "/doctor-slots" ? "text-purple-600" : "text-gray-700 hover:text-purple-600"
+                location.pathname === "/admin/doctor-slots" ? "text-purple-600" : "text-gray-700 hover:text-purple-600"
               }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

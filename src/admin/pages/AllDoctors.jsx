@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DoctorContext } from "../../shared/contexts/DoctorContext.jsx";
+import { AdminDoctorContext } from "../contexts/AdminDoctorContext";
 
 function AllDoctors() {
   const navigate = useNavigate();
 
-  const {doctors} = useContext(DoctorContext);
+  const {doctors} = useContext(AdminDoctorContext) ;
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -29,7 +29,7 @@ function AllDoctors() {
             <p className="text-gray-600 mt-2">Manage all registered doctors in the system</p>
           </div>
           <button
-            onClick={() => navigate("/add-doctor")}
+            onClick={() => navigate("/admin/add-doctor")}
             className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-xl font-semibold shadow-sm hover:bg-blue-600 transition-all duration-200"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -165,7 +165,7 @@ function AllDoctors() {
                   {/* Action Buttons */}
                   <div className="grid grid-cols-1   gap-3">
                     <button 
-                      onClick={() => navigate(`/doctor-info/${doctor.id}`, { state: { doctor } })}
+                      onClick={() => navigate(`/admin/doctor-info/${doctor.id}`, { state: { doctor } })}
                       className="px-4 py-2 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-all duration-200 text-sm flex items-center justify-center gap-2"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -17,14 +17,14 @@ const EditDoctor = () => {
     try {
       setLoading(true);
       const response = await adminAPI.getSpecificDoctor(id);
-      setDoctor(response.data);
-      setEditData({
-        name: response.data.name,
-        email: response.data.email,
-        specialization: response.data.specialization,
-        experience: response.data.experience || 0,
-        bio: response.data.bio || "",
-        degrees: response.data.degrees || [
+      setDoctor(response);
+      setFormData({
+        name: response.name,
+        email: response.email,
+        specialization: response.specialization,
+        experience: response.experience || 0,
+        bio: response.bio || "",
+        degrees: response.degrees || [
           {
             degreeName: "",
             field: "",

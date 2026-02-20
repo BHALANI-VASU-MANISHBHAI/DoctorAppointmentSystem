@@ -1,18 +1,18 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import API from "../api/index.js";
-import { GlobalContext } from "./GlobalContext.jsx";
-import { DoctorApp } from "../../App.jsx";
+import  API from "../../shared/api";
+import { PatientGlobalContext } from "./PatientGlobalContext";
+
 
 export const DoctorContext = createContext();
 
 export const DoctorContextProvider = ({ children }) => {
 
-  const { token } = useContext(GlobalContext);
+  const { token } = useContext(PatientGlobalContext);
   const [doctors, setDoctors] = useState([]);
 
   const fetchDoctors = async () => {
     try {
-      const response = await API.admin.getAllDoctors();
+      const response = await API.patient.getAllDoctors();
       console.log("Fetched doctors from context:", response);
       setDoctors(response.data);
     } catch (error) {
@@ -32,7 +32,7 @@ export const DoctorContextProvider = ({ children }) => {
 
   return (
     <DoctorContext.Provider value={value}>
-      <DoctorApp />
+      {children}
     </DoctorContext.Provider>
   );
 }

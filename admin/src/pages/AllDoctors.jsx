@@ -1,13 +1,31 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DoctorContext } from "../contexts/DoctorContext.jsx";
+import { useEffect } from "react";
 
 function AllDoctors() {
   const navigate = useNavigate();
 
-  const {doctors} = useContext(DoctorContext);
+  const [doctors , setDoctors] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState("");
+
+
+  const fetchDoctors = async () => {
+    try {
+      const response = await API.admin.getAllDoctors();
+      console.log("Fetched doctors from context:", response);
+      // Extract doctors array from response
+      const doctorsArray = Array.isArray(response) ? response : response.doctors || [];
+      setDoctors(doctorsArray);
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+    }
+  };  
+
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
 
   const filteredDoctors = doctors.filter(
     (doctor) =>
@@ -15,6 +33,11 @@ function AllDoctors() {
       doctor.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       doctor.specialization?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+
+
+
+
 
   
   return (

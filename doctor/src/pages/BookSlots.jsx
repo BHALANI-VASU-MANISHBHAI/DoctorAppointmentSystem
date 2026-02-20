@@ -11,8 +11,8 @@ function BookSlots() {
     try {
       setLoading(true);
       const response = await API.doctor.getBookedAppointments();
-      console.log("Booked appointments:", response.data);
-      setAppointments(response.data || []);
+      console.log("Booked appointments:", response);
+      setAppointments(response || []);
     } catch (error) {
       console.error("Error:", error);
     } finally {

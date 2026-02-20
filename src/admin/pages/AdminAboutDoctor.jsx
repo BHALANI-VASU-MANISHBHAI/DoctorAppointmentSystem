@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { adminAPI } from "../../shared/api/adminAPI.js";
+import API from "../../shared/api/index.js";
 
 const AdminAboutDoctor = () => {
   const { id } = useParams();
@@ -11,7 +11,7 @@ const AdminAboutDoctor = () => {
   async function fetchDoctor() {
     try {
       setLoading(true);
-      const response = await adminAPI.getSpecificDoctor(id);
+      const response = await API.admin.getSpecificDoctor(id);
       setDoctor(response.data);
     } catch (error) {
       console.error("Error fetching doctor info:", error);
@@ -55,7 +55,7 @@ const AdminAboutDoctor = () => {
       <div className="max-w-4xl mx-auto">
         {/* Back Button */}
         <button
-          onClick={() => navigate("/all-doctors")}
+          onClick={() => navigate("/admin/all-doctors")}
           className="mb-8 flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200"
         >
           <svg
@@ -229,7 +229,7 @@ const AdminAboutDoctor = () => {
           </h2>
           <div className="flex flex-col sm:flex-row gap-3">
             <button
-              onClick={() => navigate(`/edit-doctor/${id}`)}
+              onClick={() => navigate(`/admin/edit-doctor/${id}`)}
               className="flex-1 flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold transition-all duration-200 shadow-sm"
             >
               <svg
@@ -249,7 +249,7 @@ const AdminAboutDoctor = () => {
             </button>
             <button
               onClick={() =>
-                navigate(`/doctor-slots`, { state: { doctorId: doctor.id } })
+                navigate(`/admin/doctor-slots`, { state: { doctorId: doctor.id } })
               }
               className="flex-1 flex items-center justify-center gap-2 bg-gray-500 hover:bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold transition-all duration-200 shadow-sm"
             >

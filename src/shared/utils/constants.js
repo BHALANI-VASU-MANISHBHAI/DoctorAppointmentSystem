@@ -29,10 +29,11 @@ export const API_ENDPOINTS = {
   PATIENT_GET_SPECIFIC_DOCTOR_PATIENT: (doctorId) => `/patient/doctors/${doctorId}`,
   
   // ----------------------------------------Doctor-----------------------------------
-  GET_DOCTOR_SLOTS_DOCTOR: '/doctor/slots',
-  BOOK_SLOT: '/doctor/slots',
-  VIEW_SLOTS: '/doctor/slots',
-  
+  DOCTOR_GET_DOCTOR_SLOTS_DOCTOR: '/doctor/slots',
+  DOCTOR_BOOKED_APPOINTMENTS: '/doctor/appointments',
+  DOCTOR_VIEW_SLOTS: '/doctor/slots',
+  DOCTOR_DELETE_SLOT: (slotId) => `/doctor/slots/${slotId}`,
+  DOCTOR_ADD_SLOT: '/doctor/slots',
   // ----------------------------------------Upload------------------------
   UPLOAD_IMAGE: '/upload/image',
 };

@@ -2,10 +2,10 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import API from "../../shared/api/index.js";
-import { GlobalContext } from "../../shared/contexts/GlobalContext.jsx";
+import { AdminGlobalContext } from "../contexts/AdminGlobalContext.jsx";
 function Login() {
   const navigate = useNavigate();
-  const { setToken } = useContext(GlobalContext);
+  const { setToken } = useContext(AdminGlobalContext);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,12 +18,9 @@ function Login() {
     try {
       console.log("Attempting admin login with:", { email, password });
       const response = await API.auth.login({ email, password });
-      console.log("Received response from API:", response.data);
-      const token = response.data.token || response.data;
-      setToken(token);
+      console.log("Received response from API:", response);
+      setToken(response);
       toast.success("Admin login successful");
-      navigate("/admin/all-doctors");
-      console.log("Admin login response:", response.data);
     } catch (error) {
       console.error("Admin login error:", error.response);
     } finally {
@@ -143,14 +140,6 @@ function Login() {
                 </button>
               </form>
 
-              <div className="mt-6 text-center text-sm text-slate-600">
-                <p>
-                  Forgot your password?{" "}
-                  <Link to="/reset-password" className="font-semibold text-blue-600 hover:text-blue-700">
-                    Reset it
-                  </Link>
-                </p>
-              </div>
             </div>
           </div>
         </div>
@@ -160,3 +149,4 @@ function Login() {
 }
 
 export default Login;
+ 

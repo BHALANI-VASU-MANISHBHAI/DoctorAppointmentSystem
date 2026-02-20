@@ -1,18 +1,20 @@
 import { useContext } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { GlobalContext } from "../../shared/contexts/GlobalContext";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { PatientGlobalContext } from "../contexts/PatientGlobalContext";
 
 function Navbar() {
-  const { token, setToken } = useContext(GlobalContext);
+  const { token, setToken } = useContext(PatientGlobalContext);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Don't show navbar on auth pages
-  if (["/login", "/signup", "/verify"].includes(location.pathname)) {
+  if (["/patient/login", "/patient/signup", "/patient/verify"].includes(location.pathname)) {
     return null;
   }
 
   const handleLogout = () => {
     setToken(null);
+    navigate("/patient/login");
   };
 
   if (!token) {
@@ -34,7 +36,7 @@ function Navbar() {
           {/* Navigation Links */}
           <div className="hidden md:flex items-center gap-8">
             <Link
-              to="/"
+              to="/patient/all-doctors"
               className={`font-medium transition-colors ${
                 location.pathname === "/" ? "text-blue-600" : "text-gray-700 hover:text-blue-600"
               }`}
@@ -42,9 +44,9 @@ function Navbar() {
               Find Doctors
             </Link>
             <Link
-              to="/appointments"
+              to="/patient/appointments"
               className={`flex items-center gap-2 font-medium transition-colors ${
-                location.pathname === "/appointments"
+                location.pathname === "/patient/appointments"
                   ? "text-blue-600"
                   : "text-gray-700 hover:text-blue-600"
               }`}
@@ -55,9 +57,9 @@ function Navbar() {
               My Appointments
             </Link>
             <Link
-              to="/profile"
+              to="/patient/profile"
               className={`flex items-center gap-2 font-medium transition-colors ${
-                location.pathname === "/profile"
+                location.pathname === "/patient/profile"
                   ? "text-blue-600"
                   : "text-gray-700 hover:text-blue-600"
               }`}
@@ -74,9 +76,9 @@ function Navbar() {
             {/* Mobile Links */}
             <div className="md:hidden flex items-center gap-4">
               <Link
-                to="/appointments"
+                to="/patient/appointments"
                 className={`p-2 rounded-lg transition-colors ${
-                  location.pathname === "/appointments"
+                  location.pathname === "/patient/appointments"
                     ? "bg-blue-100 text-blue-600"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
@@ -87,9 +89,9 @@ function Navbar() {
                 </svg>
               </Link>
               <Link
-                to="/profile"
+                to="/patient/profile"
                 className={`p-2 rounded-lg transition-colors ${
-                  location.pathname === "/profile"
+                  location.pathname === "/patient/profile"
                     ? "bg-blue-100 text-blue-600"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}

@@ -27,8 +27,8 @@ function DoctorSlots() {
     try {
       setLoading(true);
       const response = await adminAPI.getDoctorSlotsByStatus(selectedDoctor, selectedStatus);
-      console.log("Doctor slots:", response.data);
-      setSlots(response.data || []);
+      console.log("Doctor slots:", response);
+      setSlots(response || []);
     } catch (error) {
       console.error("Error:", error);
       setSlots([]);

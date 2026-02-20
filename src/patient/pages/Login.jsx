@@ -2,24 +2,25 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import API from "../../shared/api";
-import { GlobalContext } from "../../shared/contexts/GlobalContext";
+import { PatientGlobalContext } from "../contexts/PatientGlobalContext";
 
 function Login() {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const { setToken ,navigate } = useContext(GlobalContext);
+    const { setToken ,navigate } = useContext(PatientGlobalContext);
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setLoading(true);
 
         try {
-            const { token } = await API.auth.login({ email, password });
-            setToken(token);
+            const responce = await API.auth.login({ email, password });
+            console.log("respobce ",responce);
+            setToken(responce);
             toast.success("Login successful");
-            navigate("/");
+            navigate("/patient/all-doctors");
         } catch (error) {
             console.error(error);
         } finally {
@@ -123,19 +124,19 @@ function Login() {
                             <div className="mt-6 flex flex-col gap-2 text-sm text-slate-600">
                                 <span>
                                     Do not have an account?{" "}
-                                    <Link to="/signup" className="font-semibold text-sky-700 hover:text-sky-900">
+                                    <Link to="/patient/signup" className="font-semibold text-sky-700 hover:text-sky-900">
                                         Create one
                                     </Link>
                                 </span>
                                 <span>
                                     Forgot your password?{" "}
-                                    <Link to="/reset-password" className="font-semibold text-sky-700 hover:text-sky-900">
+                                    <Link to="/patient/reset-password" className="font-semibold text-sky-700 hover:text-sky-900">
                                         Reset it
                                     </Link>
                                 </span>
                                 <span>
                                     Not verified yet?{" "}
-                                    <Link to="/verify" className="font-semibold text-amber-700 hover:text-amber-900">
+                                    <Link to="/patient/verify" className="font-semibold text-amber-700 hover:text-amber-900">
                                         Verify your account
                                     </Link>
                                 </span>

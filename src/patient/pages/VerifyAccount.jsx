@@ -39,7 +39,7 @@ function VerifyAccount() {
       await API.auth.verifyEmail({ email, otp: code });
       toast.success("Account verified. You can log in now.");
       setCode("");
-      navigate("/login");
+      navigate("/patient/login");
     } catch (error) {
       toast.error(error.response?.data || "Verification failed");
     } finally {
@@ -110,13 +110,13 @@ function VerifyAccount() {
           <div className="mt-6 flex flex-col gap-2 text-sm text-slate-600">
             <span>
               Already verified?{" "}
-              <Link to="/login" className="font-semibold text-sky-700 hover:text-sky-900">
+              <Link to="/patient/login" className="font-semibold text-sky-700 hover:text-sky-900">
                 Sign in
               </Link>
             </span>
             <span>
               Need a new account?{" "}
-              <Link to="/signup" className="font-semibold text-amber-700 hover:text-amber-900">
+              <Link to="/patient/signup" className="font-semibold text-amber-700 hover:text-amber-900">
                 Create one
               </Link>
             </span>

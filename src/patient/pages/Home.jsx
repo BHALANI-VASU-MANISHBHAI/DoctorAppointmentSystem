@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { DoctorContext } from "../../shared/contexts/DoctorContext.jsx";
+import { DoctorContext } from "../contexts/DoctorContext";
 
 function Home() {
 
-  const {doctors} = useContext(DoctorContext);
+   const {doctors} = useContext(DoctorContext);
 
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,6 +19,8 @@ function Home() {
                                   doctor.specialization === selectedSpecialization;
     return matchesSearch && matchesSpecialization;
   }) : [];
+
+ 
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -344,7 +346,7 @@ function Home() {
                   {/* Action Buttons */}
                   <div className="flex gap-3">
                     <Link
-                      to={`/doctors/${doctor.id}/about`}
+                      to={`/patient/doctors/${doctor.id}/about`}
                       state={{ doctor }}
                       className="flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-medium transition-all duration-200 shadow-sm hover:shadow-md"
                     >
@@ -364,7 +366,7 @@ function Home() {
                       <span>View Profile</span>
                     </Link>
                     <Link
-                      to={`/doctors/${doctor.id}/slots`}
+                      to={`/patient/doctors/${doctor.id}/slots`}
                       className="flex-1 flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-medium transition-all duration-200 shadow-sm hover:shadow-md group-hover:scale-[1.02]"
                     >
                       <svg

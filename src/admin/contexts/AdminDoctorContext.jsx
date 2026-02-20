@@ -1,13 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import API from "../api/index.js";
-import { GlobalContext } from "./GlobalContext.jsx";
-import { DoctorApp } from "../../App.jsx";
+import API from"../../shared/api/index.js";
+import { AdminGlobalContext } from "./AdminGlobalContext.jsx";
 
-export const DoctorContext = createContext();
+export const AdminDoctorContext = createContext();
 
-export const DoctorContextProvider = ({ children }) => {
+export const AdminDoctorContextProvider = ({ children }) => {
 
-  const { token } = useContext(GlobalContext);
+  const { token } = useContext(AdminGlobalContext);
   const [doctors, setDoctors] = useState([]);
 
   const fetchDoctors = async () => {
@@ -31,8 +30,8 @@ export const DoctorContextProvider = ({ children }) => {
   };
 
   return (
-    <DoctorContext.Provider value={value}>
-      <DoctorApp />
-    </DoctorContext.Provider>
+    <AdminDoctorContext.Provider value={value}> 
+      {children}
+    </AdminDoctorContext.Provider>
   );
 }

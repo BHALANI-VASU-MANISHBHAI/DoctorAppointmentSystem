@@ -1,12 +1,12 @@
 import { Navigate } from "react-router-dom"
 import { useContext } from "react"
-import { GlobalContext } from "../../shared/contexts/GlobalContext";
+import { AdminGlobalContext } from "../contexts/AdminGlobalContext";
 
 const ProtectedRoute = ({ children }) => {
-  const  {token}  = useContext(GlobalContext);
+  const  {token}  = useContext(AdminGlobalContext);
 
   if (!token) {
-    return <Navigate to="/login" replace />
+    return <Navigate to="/admin/login" replace />;
   }
 
   return children

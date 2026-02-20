@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import API from "../../shared/api/index.js";
 const AboutDoctor = () => {
   const { id } = useParams();
+  console.log("Doctor ID from URL:", id);
   const navigate = useNavigate();
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -12,7 +13,7 @@ const AboutDoctor = () => {
     try {
       setLoading(true);
       const response = await API.patient.getSpecificDoctor(id);
-      setDoctor(response);
+      setDoctor(response.data);
     } catch (error) {
       console.error("Error fetching doctor details:", error);
     }finally {
@@ -116,7 +117,7 @@ const AboutDoctor = () => {
               )}
 
               <button
-                onClick={() => navigate(`/doctors/${doctor.id}/slots`)}
+                onClick={() => navigate(`/patient/doctors/${doctor.id}/slots`)}
                 className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all duration-200 shadow-sm"
               >
                 Book Appointment

@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { adminAPI } from "../../shared/api/adminAPI.js";
-import { DoctorContext } from "../../shared/contexts/DoctorContext.jsx";
+import  API from "../../shared/api";
+import { AdminDoctorContext } from "../contexts/AdminDoctorContext.jsx";
 
 function AddSlots() {
 
-  const { doctors } = useContext(DoctorContext);
+  const { doctors } = useContext(AdminDoctorContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   
@@ -39,7 +39,7 @@ function AddSlots() {
       const startDateTime = `${formData.date}T${formData.startTime}:00`;
       const endDateTime = `${formData.date}T${formData.endTime}:00`;
 
-      const response = await adminAPI.addDoctorSlot(parseInt(formData.doctorId), {
+      const response = await API.admin.addDoctorSlot(parseInt(formData.doctorId), {
         startTime: startDateTime,
         endTime: endDateTime,
         date: formData.date,
@@ -49,7 +49,7 @@ function AddSlots() {
       console.log("Add Slot response:", response.data);
 
       setFormData({ doctorId: "", date: "", startTime: "", endTime: "" });
-      navigate("/all-slots");
+      navigate("/admin/all-slots");
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -66,7 +66,7 @@ function AddSlots() {
         {/* Header */}
         <div className="mb-8">
           <button
-            onClick={() => navigate("/all-slots")}
+            onClick={() => navigate("/admin/all-slots")}
             className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium mb-4"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -176,7 +176,7 @@ function AddSlots() {
             <div className="flex gap-4 pt-6">
               <button
                 type="button"
-                onClick={() => navigate("/all-slots")}
+                onClick={() => navigate("/admin/all-slots")}
                 className="flex-1 px-6 py-3 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all duration-200"
               >
                 Cancel

@@ -24,9 +24,9 @@ function Signup() {
             setLoading(true);
             await API.auth.register({ name: fullName, email, password });
             toast.success("Account created. Please verify your email.");
-            navigate(`/verify?email=${encodeURIComponent(email)}`);
+            navigate(`/patient/verify?email=${encodeURIComponent(email)}`);
         } catch (error) {
-            toast.error(error.response?.data?.message || "Signup failed");
+            toast.error(error.response?.data || "Signup failed");
         } finally {
             setLoading(false);
         }
@@ -118,13 +118,13 @@ function Signup() {
                             <div className="mt-6 flex flex-col gap-2 text-sm text-slate-600">
                                 <span>
                                     Already have an account?{" "}
-                                    <Link to="/login" className="font-semibold text-amber-700 hover:text-amber-900">
+                                    <Link to="/patient/login" className="font-semibold text-amber-700 hover:text-amber-900">
                                         Sign in
                                     </Link>
                                 </span>
                                 <span>
                                     Need to verify your email?{" "}
-                                    <Link to="/verify" className="font-semibold text-sky-700 hover:text-sky-900">
+                                    <Link to="/patient/verify" className="font-semibold text-sky-700 hover:text-sky-900">
                                         Verify your account
                                     </Link>
                                 </span>

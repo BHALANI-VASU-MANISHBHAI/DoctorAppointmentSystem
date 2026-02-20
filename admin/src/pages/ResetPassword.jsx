@@ -39,7 +39,7 @@ function ResetPassword() {
       setLoading(true);
       await API.password.resetPassword({ email, otp: code, newPassword: newPassword });
       toast.success("Password reset successful! You can now login.");
-      navigate("/login");
+      navigate("/admin/login");
     } catch (error) {
         console.log(error.response?.data);
         console.error("Error:", error);
