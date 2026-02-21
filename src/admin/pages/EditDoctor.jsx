@@ -115,7 +115,7 @@ const EditDoctor = () => {
 
       setUpdating(true);
 
-      await adminAPI.updateDoctor(updateData);
+      await API.admin.updateDoctor(updateData);
 
       // Update local state
       const updatedDoctor = {
