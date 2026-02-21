@@ -3,6 +3,11 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+import ForgotPassword from './shared/pages/ForgetPassword'
+import PasswordReset from './shared/pages/ResetPassword'
+import VerifyAccount from './shared/pages/VerifyAccount'
+import VerifyEmail from './shared/pages/VerifyEmail'
+
 // Admin Pages
 import AdminLogin from './admin/pages/Login'
 import AllDoctors from './admin/pages/AllDoctors'
@@ -26,7 +31,6 @@ import DoctorProtectedRoute from './doctor/components/ProtectedRoute'
 // Patient Pages
 import PatientLogin from './patient/pages/Login'
 import Signup from './patient/pages/Signup'
-import VerifyAccount from './patient/pages/VerifyAccount'
 import Home from './patient/pages/Home'
 import DoctorSlot from './patient/pages/DoctorSlot'
 import AboutDoctor from './patient/pages/AboutDoctor'
@@ -45,10 +49,12 @@ import { PatientContextProvider } from './patient/contexts/PatientContext'
 export function AdminApp() {
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} />
       <AdminNavbar />
       <Routes>
+        {/* Public Auth Routes */}
         <Route path="login" element={<AdminLogin />} />
+        
+        {/* Protected Routes */}
         <Route path="all-doctors" element={<AdminProtectedRoute><AllDoctors /></AdminProtectedRoute>} />
         <Route path="add-doctor" element={<AdminProtectedRoute><AddDoctor /></AdminProtectedRoute>} />
         <Route path="doctor-info/:id" element={<AdminProtectedRoute><AdminAboutDoctor /></AdminProtectedRoute>} />
@@ -56,6 +62,8 @@ export function AdminApp() {
         <Route path="all-slots" element={<AdminProtectedRoute><AllSlots /></AdminProtectedRoute>} />
         <Route path="add-slots" element={<AdminProtectedRoute><AddSlots /></AdminProtectedRoute>} />
         <Route path="doctor-slots" element={<AdminProtectedRoute><DoctorSlots /></AdminProtectedRoute>} />
+        
+        {/* Catch-all - redirect to all-doctors */}
         <Route path="*" element={<Navigate to="all-doctors" replace />} />
       </Routes>
     </>
@@ -65,13 +73,17 @@ export function AdminApp() {
 export function DoctorApp() {
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} />
       <DoctorNavbar />
       <Routes>
+        {/* Public Auth Routes */}
         <Route path="login" element={<DoctorLogin />} />
+        
+        {/* Protected Routes */}
         <Route path="book-slots" element={<DoctorProtectedRoute><BookSlots /></DoctorProtectedRoute>} />
         <Route path="view-slots" element={<DoctorProtectedRoute><ViewSlots /></DoctorProtectedRoute>} />
         <Route path="add-slot" element={<DoctorProtectedRoute><AddSlot /></DoctorProtectedRoute>} />
+        
+        {/* Catch-all - redirect to view-slots */}
         <Route path="*" element={<Navigate to="view-slots" replace />} />
       </Routes>
     </>
@@ -81,19 +93,19 @@ export function DoctorApp() {
 export function PatientApp() {
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} />
       <PatientNavbar />
       <Routes>
-        {/* Public routes */}
+        {/* Public Auth Routes */}
         <Route path="login" element={<PatientLogin />} />
-        <Route path="signup" element={<Signup />} />
-        <Route path="verify" element={<VerifyAccount />} />
+        <Route path="signup" element={<Signup />} />        
         {/* Protected routes */}
         <Route path="all-doctors" element={<PatientProtectedRoute><Home /></PatientProtectedRoute>} />
         <Route path="doctors/:id/slots" element={<PatientProtectedRoute><DoctorSlot /></PatientProtectedRoute>} />
         <Route path="doctors/:id/about" element={<PatientProtectedRoute><AboutDoctor /></PatientProtectedRoute>} />
         <Route path="appointments" element={<PatientProtectedRoute><Appointment /></PatientProtectedRoute>} />
         <Route path="profile" element={<PatientProtectedRoute><Profile /></PatientProtectedRoute>} />
+        
+        {/* Catch-all - redirect to all-doctors */}
         <Route path="*" element={<Navigate to="all-doctors" replace />} />
       </Routes>
     </>
@@ -103,38 +115,47 @@ export function PatientApp() {
 // Main Router
 function App() {
   return (
+    <>
+    <ToastContainer position="top-right" autoClose={3000}  />
     <Routes>
+
+      {/* Global Auth Routes - These should NOT be redirected */}
+      <Route path="/auth/forgot" element={<ForgotPassword />} />
+      <Route path="/auth/reset" element={<PasswordReset />} />
+      <Route path="/auth/verify-account" element={<VerifyAccount />} />
+      <Route path="/auth/verification" element={<VerifyEmail />} />
+      
       {/* Admin Routes */}
       <Route path="/admin/*" element={
         <AdminGlobalContextProvider>
-        <AdminDoctorContextProvider>
-        <AdminApp />
-        </AdminDoctorContextProvider> 
+          <AdminDoctorContextProvider>
+            <AdminApp />
+          </AdminDoctorContextProvider> 
         </AdminGlobalContextProvider>
-        } />
+      } />
 
       {/* Doctor Routes */}
       <Route path="/doctor/*" element={
         <DoctorGlobalContextProvider>
-        <DoctorApp />
+          <DoctorApp />
         </DoctorGlobalContextProvider>
-        } />
+      } />
 
       {/* Patient Routes */}
       <Route path="/patient/*" element={
         <PatientGlobalContextProvider>
-        <PatientContextProvider>
-        <DoctorContextProvider>
-            <PatientApp />            
-        </DoctorContextProvider>
-        </PatientContextProvider>
+          <PatientContextProvider>
+            <DoctorContextProvider>
+              <PatientApp />            
+            </DoctorContextProvider>
+          </PatientContextProvider>
         </PatientGlobalContextProvider>
       } />
 
-      {/* Default redirect to patient all-doctors */}
+      {/* Default - redirect root to patient */}
       <Route path="/" element={<Navigate to="/patient/all-doctors" replace />} />
-      <Route path="*" element={<Navigate to="/patient/all-doctors" replace />} />
     </Routes>
+    </>
   )
 }
 

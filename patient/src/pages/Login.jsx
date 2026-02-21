@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import API from "../api";
+import API from "../api/index.js";
 import { GlobalContext } from "../contexts/GlobalContext";
 
 function Login() {
@@ -132,7 +132,7 @@ function Login() {
                                 </span>
                                 <span>
                                     Forgot your password?{" "}
-                                    <Link to="/reset-password" className="font-semibold text-sky-700 hover:text-sky-900">
+                                    <Link to="/auth/forgot" className="font-semibold text-sky-700 hover:text-sky-900">
                                         Reset it
                                     </Link>
                                 </span>

@@ -140,8 +140,14 @@ function Login() {
                   {loading ? "Signing in..." : "Sign in as Doctor"}
                 </button>
               </form>
-
-              
+              <div className="mt-6 flex flex-col gap-2 text-sm text-slate-600">
+                <span>
+                  Forgot your password?{" "}
+                  <Link to="/auth/forgot" className="font-semibold text-sky-700 hover:text-sky-900">
+                    Reset it
+                  </Link>
+                  </span>
+                  </div> 
             </div>
           </div>
         </div>

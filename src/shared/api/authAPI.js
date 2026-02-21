@@ -18,6 +18,13 @@ export const authAPI = {
     );
     return responce;
   },
+  sendAccountVerificationLink: async (data) => {
+    const responce = await apiClient.post(
+      API_ENDPOINTS.SEND_ACCOUNT_VERIFICATION_LINK,
+      data,
+    );
+    return responce;
+  },
   verifyEmail: async (data) => {
     const responce = await apiClient.post(API_ENDPOINTS.VERIFY_EMAIL, data);
     return responce;

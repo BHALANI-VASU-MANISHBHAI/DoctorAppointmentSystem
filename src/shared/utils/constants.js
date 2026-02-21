@@ -3,9 +3,10 @@ export const API_ENDPOINTS = {
   LOGIN: '/auth/login',
   REGISTER: '/auth/register',
   SEND_VERIFICATION_CODE_EMAIL: '/auth/send-verification-otp',
+  SEND_ACCOUNT_VERIFICATION_LINK: '/auth/verification',
   VERIFY_EMAIL: '/auth/verify-otp',
   FORGET_PASSWORD: '/password/forget',
-  RESET_PASSWORD: (token) => `/password/reset?token=${token}`,
+  RESET_PASSWORD: (token) => `/password/reset?token=${encodeURIComponent(String(token))}`,
   
   // ----------------------------------------Admin Doctor-----------------------------------
   GET_ALL_DOCTORS: '/admin/doctors',

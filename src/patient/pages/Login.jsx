@@ -130,13 +130,13 @@ function Login() {
                                 </span>
                                 <span>
                                     Forgot your password?{" "}
-                                    <Link to="/patient/reset-password" className="font-semibold text-sky-700 hover:text-sky-900">
+                                    <Link to="/auth/forgot" className="font-semibold text-sky-700 hover:text-sky-900">
                                         Reset it
                                     </Link>
                                 </span>
                                 <span>
                                     Not verified yet?{" "}
-                                    <Link to="/patient/verify" className="font-semibold text-amber-700 hover:text-amber-900">
+                                    <Link to="/auth/verification" className="font-semibold text-amber-700 hover:text-amber-900">
                                         Verify your account
                                     </Link>
                                 </span>

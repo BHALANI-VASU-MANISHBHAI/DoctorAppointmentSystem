@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import API from "../api";
+import API from "../api/index.js";
 
 function ResetPassword() {
   const navigate = useNavigate();

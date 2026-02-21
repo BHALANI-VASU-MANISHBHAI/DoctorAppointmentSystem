@@ -2,7 +2,8 @@ import './App.css'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import VerifyAccount from './pages/VerifyAccount'
-import ResetPassword from './pages/ResetPassword'
+import ForgotPassword from './pages/ForgotPassword'
+import PasswordReset from './pages/PasswordReset'
 import Home from './pages/Home'
 import DoctorSlot from './pages/DoctorSlot'
 import AboutDoctor from './pages/AboutDoctor'
@@ -25,7 +26,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/verify" element={<VerifyAccount />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/password/forgot" element={<ForgotPassword />} />
+        <Route path="/password/reset" element={<PasswordReset />} />
 
         {/* Protected routes */}
         <Route
